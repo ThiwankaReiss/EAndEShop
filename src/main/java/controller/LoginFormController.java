@@ -3,6 +3,7 @@ package controller;
 import bo.custom.EmployeeBo;
 import bo.custom.impl.EmployeeBoImpl;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import dto.EmployeeDto;
 import javafx.event.ActionEvent;
@@ -32,6 +33,7 @@ public class LoginFormController {
     public Label loginTxt;
     public JFXButton signInBtn;
     public JFXButton backBtn;
+
 
 
     private EmployeeBo employeeBo = new EmployeeBoImpl();
@@ -88,7 +90,7 @@ public class LoginFormController {
                                 passwordTextField.getText()
                         )
                 ){
-                    openHomePage();
+                    openHomePage(dto.getUserId());
                     sendMessage=false;
                 }
             }
@@ -164,12 +166,12 @@ public class LoginFormController {
         }
     }
 
-    private void openHomePage() {
+    private void openHomePage(String userId) {
         Stage stage = (Stage) pane.getScene().getWindow();
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/EmployeeHomeForm.fxml"))));
             stage.setResizable(true);
-            stage.setTitle("Empoloyee Home");
+            stage.setTitle("Empoloyee Home"+userId);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
