@@ -8,5 +8,6 @@ import java.util.List;
 public interface EmployeeBo {
     List<EmployeeDto> allEmployees() throws SQLException, ClassNotFoundException;
 
-    boolean saveEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException;
+    void saveEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException;
+    boolean updateEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException;
 }

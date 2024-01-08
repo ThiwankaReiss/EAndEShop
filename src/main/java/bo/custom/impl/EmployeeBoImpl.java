@@ -27,22 +27,37 @@ public class EmployeeBoImpl implements EmployeeBo {
                     employee.getPosition(),
                     employee.getContact(),
                     employee.getName(),
-                    employee.getPassword()
+                    employee.getPassword(),
+                    employee.getDescription()
             ));
         }
         return list;
     }
 
     @Override
-    public boolean saveEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException {
-        return employeeDao.save(new Employee(
+    public void saveEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException {
+        employeeDao.save(new Employee(
                 dto.getUserId(),
                 dto.getEmail(),
                 dto.getPosition(),
                 dto.getContact(),
                 dto.getName(),
-                dto.getPassword()
+                dto.getPassword(),
+                dto.getDescription()
         ));
+    }
+
+    public boolean updateEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException {
+        return employeeDao.update(new Employee(
+                dto.getUserId(),
+                dto.getEmail(),
+                dto.getPosition(),
+                dto.getContact(),
+                dto.getName(),
+                dto.getPassword(),
+                dto.getDescription()
+        ));
+
     }
 
 }

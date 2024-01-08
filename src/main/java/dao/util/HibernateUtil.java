@@ -1,6 +1,7 @@
 package dao.util;
 
 import entity.Employee;
+import entity.UserHistory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -18,6 +19,7 @@ public class HibernateUtil {
 
         Metadata metadata = new MetadataSources(standardRegistry)
                 .addAnnotatedClass(Employee.class)
+                .addAnnotatedClass(UserHistory.class)
 
                 .getMetadataBuilder()
                 .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)

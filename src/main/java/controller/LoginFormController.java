@@ -70,10 +70,11 @@ public class LoginFormController {
                     new EmployeeDto(
                             "1",
                             "Thiwankar2003@gmail.com",
-                            "Admmin",
+                            "Admin",
                             "0772469072",
                             "Thiwanka",
-                            "ThiwankaReiss"
+                            "ThiwankaReiss",
+                            "Hi I'm Thiwanka .I'm the System administrator of E and E Shop. I am highly experience in this industry. "
 
                     ));
         }
@@ -166,7 +167,8 @@ public class LoginFormController {
         }
     }
 
-    private void openHomePage(String userId) {
+    private void openHomePage(String userId) throws SQLException, ClassNotFoundException {
+        UserInstanceController.getInstance().setUserId(userId);
         Stage stage = (Stage) pane.getScene().getWindow();
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/EmployeeHomeForm.fxml"))));

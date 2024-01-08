@@ -25,6 +25,34 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     @Override
     public boolean update(Employee entity) throws SQLException, ClassNotFoundException {
+        Session session=HibernateUtil.getSession();
+        Transaction transaction=session.beginTransaction();
+
+        try {
+
+            Employee existingEntity = session.get(Employee.class, entity.getUserId());
+
+            existingEntity.setPassword(entity.getPassword());
+            existingEntity.setContact(entity.getContact());
+            existingEntity.setName(entity.getName());
+            existingEntity.setEmail(entity.getEmail());
+            existingEntity.setDescription(entity.getDescription());
+            existingEntity.setPosition(entity.getPosition());
+
+            session.update(existingEntity);
+
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
         return false;
     }
 

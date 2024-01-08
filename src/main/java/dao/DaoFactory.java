@@ -1,6 +1,7 @@
 package dao;
 
 import dao.custom.impl.EmployeeDaoImpl;
+import dao.custom.impl.UserHistoryDaoImpl;
 import dao.util.DaoType;
 
 public class DaoFactory {
@@ -15,6 +16,7 @@ public class DaoFactory {
     public <T extends SuperDao>T getDao(DaoType type){
         switch (type){
             case EMPLOYEE:return (T)new EmployeeDaoImpl();
+            case USERHISTORY:return (T)new UserHistoryDaoImpl();
         }
         return null;
     }

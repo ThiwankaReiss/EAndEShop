@@ -5,6 +5,8 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -15,11 +17,11 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-      <RowConstraints maxHeight="386.0" minHeight="10.0" prefHeight="44.66667175292969" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="408.3333282470703" minHeight="10.0" prefHeight="392.3333282470703" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="41.666656494140625" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="408.3333282470703" minHeight="10.0" prefHeight="395.3333435058594" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="639.0" style="-fx-background-color: E8E4E4;" GridPane.rowIndex="1">
+      <GridPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="639.0" style="-fx-background-color: E8E4E4;" GridPane.rowIndex="1">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.33334350585938" minWidth="3.0" prefWidth="46.333343505859375" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="302.0" minWidth="10.0" prefWidth="258.6666564941406" />
@@ -38,25 +40,29 @@
          <children>
             <GridPane GridPane.columnIndex="3" GridPane.rowIndex="4">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.66668701171875" minWidth="10.0" prefWidth="144.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.33331298828125" minWidth="10.0" prefWidth="87.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.66668701171875" minWidth="10.0" prefWidth="108.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.33331298828125" minWidth="10.0" prefWidth="35.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.33331298828125" minWidth="10.0" prefWidth="91.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
+               <children>
+                  <JFXButton fx:id="editProfileBtn" buttonType="RAISED" onAction="#editProfileBtnOnAction" prefHeight="25.0" prefWidth="105.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Edit Profile" textFill="WHITE" GridPane.columnIndex="2" />
+                  <JFXButton fx:id="addEmployeeBtn" buttonType="RAISED" onAction="#addEmployeeBtnOnAction" prefHeight="25.0" prefWidth="103.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Add Employee" textFill="WHITE" />
+               </children>
             </GridPane>
             <GridPane GridPane.columnIndex="3" GridPane.rowIndex="2">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="92.0" minHeight="5.3333282470703125" prefHeight="44.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="190.6666717529297" minHeight="0.0" prefHeight="21.66668701171875" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="216.66665649414062" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="92.0" minHeight="5.3333282470703125" prefHeight="46.666656494140625" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="249.0" minHeight="10.0" prefHeight="246.33334350585938" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <Label fx:id="userIdTxt" prefHeight="17.0" prefWidth="334.0" style="-fx-alignment: center;" text="User Id :" />
-                  <JFXTextArea fx:id="descriptionTxt" style="-fx-align-content: center;" text="Description &#10;My name Is Thiwanka Im a learning to become a software Engineer." wrapText="true" GridPane.rowIndex="2" />
+                  <JFXTextArea fx:id="descriptionTxt" prefHeight="247.0" prefWidth="0.0" style="-fx-background-color: white;" text="Description &#10;My name Is Thiwanka Im a learning to become a software Engineer." wrapText="true" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -85,7 +91,7 @@
                      <children>
                         <JFXTextField fx:id="userNameTextField" focusColor="#f9aa33" labelFloat="true" promptText="User Name" style="-fx-prompt-text-fill: white; -fx-text-fill: white;" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <JFXTextField fx:id="passwordTextField" focusColor="#f9aa33" labelFloat="true" promptText="Password" style="-fx-prompt-text-fill: white; -fx-text-fill: white;" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <JFXTextField fx:id="emailTextField1" focusColor="#f9aa33" labelFloat="true" promptText="Email" style="-fx-prompt-text-fill: white; -fx-text-fill: white;" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <JFXTextField fx:id="emailTextField" focusColor="#f9aa33" labelFloat="true" promptText="Email" style="-fx-prompt-text-fill: white; -fx-text-fill: white;" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <JFXTextField fx:id="phoneNumberTextField" focusColor="#f9aa33" labelFloat="true" promptText="Phone Number" style="-fx-prompt-text-fill: white; -fx-text-fill: white;" unFocusColor="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
@@ -96,13 +102,35 @@
                   </Label>
                </children>
             </GridPane>
-            <JFXButton fx:id="logoutBtn" buttonType="RAISED" onAction="#logoutBtnOnAction" prefHeight="25.0" prefWidth="55.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Logout" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="4">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXButton fx:id="logoutBtn" buttonType="RAISED" onAction="#logoutBtnOnAction" prefHeight="25.0" prefWidth="71.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Logout" textFill="WHITE" />
+                  <JFXButton fx:id="updateBtn" buttonType="RAISED" onAction="#updateBtnOnAction" prefHeight="25.0" prefWidth="71.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Update" textFill="WHITE" GridPane.columnIndex="2" />
+               </children>
+            </GridPane>
+            <JFXButton fx:id="backBtn" onAction="#backBtnOnAction" prefHeight="19.0" prefWidth="26.0">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/back.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
          </children>
       </GridPane>
       <GridPane>
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.66665649414062" minWidth="10.0" prefWidth="121.66665649414062" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.33334350585938" minWidth="10.0" prefWidth="79.33331298828125" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="122.0" minWidth="10.0" prefWidth="122.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.0" minWidth="10.0" prefWidth="87.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="79.33331298828125" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="79.33331298828125" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="79.33331298828125" />
@@ -110,7 +138,7 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="79.33331298828125" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <GridPane style="-fx-border-color: #f9aa33; -fx-background-color: rgba(35, 47, 52, 1);">
@@ -184,10 +212,10 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Hyperlink prefHeight="23.0" prefWidth="124.0" style="-fx-alignment: center;" text="Parts" textFill="WHITE" />
+                  <Hyperlink prefHeight="40.0" prefWidth="84.0" style="-fx-alignment: center;" text="Parts" textFill="WHITE" />
                </children>
             </GridPane>
          </children>
