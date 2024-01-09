@@ -6,6 +6,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import dto.EmployeeDto;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +18,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import javax.mail.*;
 import javax.mail.internet.AddressException;
@@ -22,6 +26,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,7 +40,8 @@ public class LoginFormController {
     public Label loginTxt;
     public JFXButton signInBtn;
     public JFXButton backBtn;
-
+    public Label lblTime;
+    public Label lblDate;
 
 
     private EmployeeBo employeeBo = new EmployeeBoImpl();
@@ -53,7 +61,8 @@ public class LoginFormController {
 
         backBtn.setVisible(false);
         saveAdmin();
-
+        calculateTime();
+        calculateDate();
 
     }
 
@@ -193,5 +202,26 @@ public class LoginFormController {
         backBtn.setVisible(false);
         passwordTextField.setVisible(true);
         signInBtn.setText("Sign In");
+    }
+
+    private void calculateTime() {
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.ZERO,
+                actionEvent -> lblTime.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+        ), new KeyFrame(Duration.seconds(1)));
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private void calculateDate(){
+        LocalDate currentDate = LocalDate.now();
+
+        // Define a date formatter to format the date as a string
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Format the date and print it
+        String formattedDate = currentDate.format(dateFormatter);
+        lblDate.setText(formattedDate);
     }
 }

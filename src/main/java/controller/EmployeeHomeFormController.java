@@ -6,17 +6,25 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import dto.EmployeeDto;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class EmployeeHomeFormController {
@@ -34,6 +42,11 @@ public class EmployeeHomeFormController {
 
     public JFXButton updateBtn;
     public JFXButton backBtn;
+    public MenuItem orderReportBtn;
+    public MenuItem customerReportBtn;
+    public MenuItem salesReportBtn;
+    public Label lblTime;
+    public Label lblDate;
     private EmployeeBo employeeBo = new EmployeeBoImpl();
     private List<EmployeeDto> allEmployees;
 
@@ -60,11 +73,13 @@ public class EmployeeHomeFormController {
 
         fieldEditManager(false);
         positionStatus=employeeDto.getPosition().equalsIgnoreCase("Admin");
-        System.out.println(positionStatus);
         btnManager(true);
 
-
-
+        if(!positionStatus){
+            salesReportBtn.setVisible(false);
+        }
+        calculateTime();
+        calculateDate();
     }
 
     private String getEmployeeDescrtiption() {
@@ -164,7 +179,15 @@ public class EmployeeHomeFormController {
 
 
     public void addEmployeeBtnOnAction(ActionEvent actionEvent) {
-        
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/AddEmployeeForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Add Employee Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public String formatDescription(){
         String description=descriptionTxt.getText();
@@ -188,5 +211,133 @@ public class EmployeeHomeFormController {
     public void backBtnOnAction(ActionEvent actionEvent) {
         fieldEditManager(false);
         btnManager(true);
+    }
+
+    public void orderReportBtnOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/OrderReportForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Orders Report Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void customerReportBtnOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/CustomerReportForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Customers Report Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void salesReportBtnOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/SalesReportForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Sales Report Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void homeOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/EmployeeHomeForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Employee Home");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void customerOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/CustomerForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Customer Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void placeOrderOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/PlaceOrderForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Place Order Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ordersOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/OrderForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Order Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void itemsOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/ItemForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Item From");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void partsOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) employeePane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/PartForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Parts Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void calculateTime() {
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.ZERO,
+                actionEvent -> lblTime.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+        ), new KeyFrame(Duration.seconds(1)));
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private void calculateDate(){
+        LocalDate currentDate = LocalDate.now();
+
+        // Define a date formatter to format the date as a string
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Format the date and print it
+        String formattedDate = currentDate.format(dateFormatter);
+        lblDate.setText(formattedDate);
     }
 }
