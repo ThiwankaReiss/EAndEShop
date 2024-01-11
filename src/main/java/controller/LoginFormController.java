@@ -70,22 +70,19 @@ public class LoginFormController {
         allEmployees = employeeBo.allEmployees();
         boolean isSaved=false;
         for (EmployeeDto dto:allEmployees) {
-            if(dto.getUserId().equals("1")){
-                isSaved=true;
-            }
+
+            isSaved=true;
+            break;
         }
         if(!isSaved){
-            employeeBo.saveEmployee(
-                    new EmployeeDto(
-                            "1",
-                            "Thiwankar2003@gmail.com",
-                            "Admin",
-                            "0772469072",
-                            "Thiwanka",
-                            "ThiwankaReiss",
-                            "Hi I'm Thiwanka .I'm the System administrator of E and E Shop. I am highly experience in this industry. "
-
-                    ));
+            EmployeeDto dto=new EmployeeDto();
+            dto.setName("Thiwanka");
+            dto.setContact("0772469072");
+            dto.setEmail("Thiwankar2003@gmail.com");
+            dto.setPassword("ThiwankaReiss");
+            dto.setPosition("Admin");
+            dto.setDescription("Hi I'm Thiwanka .I'm the System administrator of E and E Shop. I am highly experience in this industry. ");
+            employeeBo.saveEmployee(dto);
         }
     }
 
@@ -176,7 +173,7 @@ public class LoginFormController {
         }
     }
 
-    private void openHomePage(String userId) throws SQLException, ClassNotFoundException {
+    private void openHomePage(Long userId) throws SQLException, ClassNotFoundException {
         UserInstanceController.getInstance().setUserId(userId);
         Stage stage = (Stage) pane.getScene().getWindow();
         try {

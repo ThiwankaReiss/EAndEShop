@@ -26,7 +26,7 @@ public class UserHistoryDaoImpl implements UserHistoryDao {
     }
 
     @Override
-    public boolean delete(String value) throws SQLException, ClassNotFoundException {
+    public boolean delete(Long value) throws SQLException, ClassNotFoundException {
         return false;
     }
 

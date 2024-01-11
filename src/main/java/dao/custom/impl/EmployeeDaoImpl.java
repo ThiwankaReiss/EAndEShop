@@ -7,19 +7,25 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import javax.persistence.PersistenceException;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public class EmployeeDaoImpl implements EmployeeDao {
     @Override
-    public boolean save(Employee entity) throws SQLException, ClassNotFoundException {
-        Session session= HibernateUtil.getSession();
-        Transaction transaction=session.beginTransaction();
-        session.save(entity);
-        transaction.commit();
-        session.close();
-        return true;
+    public boolean save(Employee entity) throws SQLException, ClassNotFoundException{
 
+        try{
+            Session session= HibernateUtil.getSession();
+            Transaction transaction=session.beginTransaction();
+            session.save(entity);
+            transaction.commit();
+            session.close();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
 
     }
 
@@ -57,8 +63,13 @@ public class EmployeeDaoImpl implements EmployeeDao {
     }
 
     @Override
-    public boolean delete(String value) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean delete(Long value) throws SQLException, ClassNotFoundException {
+        Session session= HibernateUtil.getSession();
+        Transaction transaction=session.beginTransaction();
+        session.delete(session.find(Employee.class,value));
+        transaction.commit();
+        session.close();
+        return true;
     }
 
     @Override

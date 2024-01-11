@@ -12,13 +12,18 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -54,9 +59,10 @@ public class EmployeeHomeFormController {
 
     private Boolean positionStatus;
 
+
     public void initialize() throws SQLException, ClassNotFoundException {
 
-        String userId = UserInstanceController.getInstance().getUserId();
+        Long userId = UserInstanceController.getInstance().getUserId();
         allEmployees = employeeBo.allEmployees();
         for (EmployeeDto dto: allEmployees) {
             if(dto.getUserId().equals(userId)){
@@ -196,16 +202,52 @@ public class EmployeeHomeFormController {
     }
 
     public void updateBtnOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        if(descriptionTxt.getText().equals("")||descriptionTxt.getText().equals(null)){
+            descriptionTxt.setText(employeeDto.getDescription());
+        }
 
-        employeeBo.updateEmployee(new EmployeeDto(
-                employeeDto.getUserId(),
-                emailTextField.getText(),
-                employeeDto.getPosition(),
-                phoneNumberTextField.getText(),
-                userNameTextField.getText(),
-                passwordTextField.getText(),
-                formatDescription()
-        ));
+        if(isValidUpdatableUser()){
+            employeeBo.updateEmployee(new EmployeeDto(
+                    employeeDto.getUserId(),
+                    emailTextField.getText(),
+                    employeeDto.getPosition(),
+                    phoneNumberTextField.getText(),
+                    userNameTextField.getText(),
+                    passwordTextField.getText(),
+                    formatDescription()
+            ));
+        }
+        initialize();
+    }
+
+    private boolean isValidUpdatableUser() throws SQLException, ClassNotFoundException {
+        JFXTextField [] textFields={userNameTextField,emailTextField
+                ,phoneNumberTextField,passwordTextField};
+        for (JFXTextField textField:textFields) {
+            if(textField.getText().equals(null)||textField.getText().equals("")){
+                textField.setPromptText("Enter "+textField.getPromptText());
+                textField.setStyle("-fx-prompt-text-fill:red;-fx-text-fill : white;");
+                return false;
+            }
+        }
+
+        List<EmployeeDto> dtoList = employeeBo.allEmployees();
+
+        for (EmployeeDto dto:dtoList) {
+            if(!employeeDto.getUserId().equals(dto.getUserId())){
+                String[] dtoAttributes={dto.getName(),
+                        dto.getEmail(),dto.getContact(),dto.getPassword()};
+                for (int i = 0; i < textFields.length; i++) {
+                    if(textFields[i].getText().equals(dtoAttributes[i])){
+                        new Alert(Alert.AlertType.ERROR,"This "+textFields[i].getPromptText()+" is already taken. Enter different "+textFields[i].getPromptText()).show();
+                        return false;
+                    }
+                }
+            }
+
+        }
+
+        return true;
     }
 
     public void backBtnOnAction(ActionEvent actionEvent) {
@@ -339,5 +381,11 @@ public class EmployeeHomeFormController {
         // Format the date and print it
         String formattedDate = currentDate.format(dateFormatter);
         lblDate.setText(formattedDate);
+    }
+
+    public void descriptionTxtMouseClicked(MouseEvent mouseEvent) {
+        if(formatDescription().replaceAll("[\\n\\s]+", "").equals(employeeDto.getDescription().replaceAll("[\\n\\s]+", ""))){
+            descriptionTxt.setText("");
+        }
     }
 }

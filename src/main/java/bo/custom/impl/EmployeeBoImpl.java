@@ -35,16 +35,15 @@ public class EmployeeBoImpl implements EmployeeBo {
     }
 
     @Override
-    public void saveEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException {
-        employeeDao.save(new Employee(
-                dto.getUserId(),
-                dto.getEmail(),
-                dto.getPosition(),
-                dto.getContact(),
-                dto.getName(),
-                dto.getPassword(),
-                dto.getDescription()
-        ));
+    public boolean saveEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException {
+        Employee employee=new Employee();
+        employee.setName(dto.getName());
+        employee.setEmail(dto.getEmail());
+        employee.setContact(dto.getContact());
+        employee.setPosition(dto.getPosition());
+        employee.setPassword(dto.getPassword());
+        employee.setDescription(dto.getDescription());
+        return employeeDao.save(employee);
     }
 
     public boolean updateEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException {
@@ -58,6 +57,10 @@ public class EmployeeBoImpl implements EmployeeBo {
                 dto.getDescription()
         ));
 
+    }
+
+    public boolean deleteEmployee(Long id) throws SQLException, ClassNotFoundException {
+        return employeeDao.delete(id);
     }
 
 }

@@ -51,7 +51,7 @@
                </rowConstraints>
                <children>
                   <JFXButton fx:id="editProfileBtn" buttonType="RAISED" onAction="#editProfileBtnOnAction" prefHeight="25.0" prefWidth="105.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Edit Profile" textFill="WHITE" GridPane.columnIndex="2" />
-                  <JFXButton fx:id="addEmployeeBtn" buttonType="RAISED" onAction="#addEmployeeBtnOnAction" prefHeight="25.0" prefWidth="103.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Add Employee" textFill="WHITE" />
+                  <JFXButton fx:id="addEmployeeBtn" buttonType="RAISED" onAction="#addEmployeeBtnOnAction" prefHeight="25.0" prefWidth="146.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Add Employee" textFill="WHITE" />
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="3" GridPane.rowIndex="2">
@@ -64,7 +64,7 @@
                </rowConstraints>
                <children>
                   <Label fx:id="userIdTxt" prefHeight="17.0" prefWidth="334.0" style="-fx-alignment: center;" text="User Id :" />
-                  <JFXTextArea fx:id="descriptionTxt" prefHeight="247.0" prefWidth="104.0" style="-fx-background-color: white;" text="Description &#10;My name Is Thiwanka Im a learning to become a software Engineer." wrapText="true" GridPane.rowIndex="1" />
+                  <JFXTextArea fx:id="descriptionTxt" onMouseClicked="#descriptionTxtMouseClicked" prefHeight="247.0" prefWidth="104.0" style="-fx-background-color: white;" text="Description &#10;My name Is Thiwanka Im a learning to become a software Engineer." wrapText="true" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">

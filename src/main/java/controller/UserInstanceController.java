@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class UserInstanceController {
     private static UserInstanceController userInstanceController;
-    private static String userId;
+    private static Long userId;
     private UserInstanceController() throws ClassNotFoundException, SQLException {
 
     }
@@ -15,10 +15,10 @@ public class UserInstanceController {
         return userInstanceController!=null ? userInstanceController : (userInstanceController=new UserInstanceController());
     }
 
-    public String getUserId(){
+    public Long getUserId(){
         return userId;
     }
-    public void setUserId(String userId){
+    public void setUserId(Long userId){
         this.userId=userId;
     }
 }

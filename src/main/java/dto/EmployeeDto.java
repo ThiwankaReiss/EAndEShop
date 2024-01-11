@@ -5,8 +5,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class EmployeeDto {
-    private String userId;
+    private Long userId;
     private String email;
     private String position;
     private String contact;
