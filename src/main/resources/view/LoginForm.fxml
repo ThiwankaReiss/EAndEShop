@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: E8E4E4;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
+<GridPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="437.0" prefWidth="604.0" style="-fx-background-color: E8E4E4;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="40.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="223.0" />
@@ -47,8 +47,8 @@
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.3333740234375" minWidth="10.0" prefWidth="22.66668701171875" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="154.66665649414062" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="95.66668701171875" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="166.66665649414062" minHeight="10.0" prefHeight="164.66665649414062" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="95.66668701171875" minHeight="10.0" prefHeight="42.333343505859375" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <GridPane GridPane.columnIndex="1">
@@ -58,32 +58,39 @@
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="45.333343505859375" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="88.66665649414062" minHeight="10.0" prefHeight="55.666656494140625" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="86.33334350585938" minHeight="10.0" prefHeight="56.333343505859375" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="86.33334350585938" minHeight="10.0" prefHeight="20.333343505859375" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="88.66665649414062" minHeight="10.0" prefHeight="48.333343505859375" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="86.33334350585938" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="86.33334350585938" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <JFXTextField fx:id="userNameTextField" focusColor="#f9aa33" labelFloat="true" promptText="User Name" style="-fx-prompt-text-fill: white; -fx-text-fill: white;" unFocusColor="WHITE" GridPane.rowIndex="1" />
                         <JFXTextField fx:id="passwordTextField" focusColor="#f9aa33" labelFloat="true" promptText="Password" style="-fx-prompt-text-fill: white; -fx-text-fill: white;" unFocusColor="WHITE" GridPane.rowIndex="2" />
+                        <Label fx:id="otpContDown" prefHeight="35.0" prefWidth="156.0" style="-fx-alignment: center;" textFill="#f8f7f7" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Label>
                      </children>
                   </GridPane>
-                  <GridPane prefHeight="53.0" prefWidth="202.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <GridPane prefHeight="39.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="113.3333740234375" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="75.6666259765625" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="35.6666259765625" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="68.66668701171875" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="7.33331298828125" prefWidth="12.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="84.66668701171875" minWidth="10.0" prefWidth="77.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXButton fx:id="signInBtn" buttonType="RAISED" onAction="#signInBtnOnAction" prefHeight="25.0" prefWidth="92.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Sign In" textFill="WHITE" GridPane.columnIndex="1" />
+                        <JFXButton fx:id="signInBtn" buttonType="RAISED" onAction="#signInBtnOnAction" prefHeight="25.0" prefWidth="92.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Sign In" textFill="WHITE" GridPane.columnIndex="3" />
+                        <JFXButton fx:id="resendBtn" buttonType="RAISED" onAction="#resendBtnOnAction" prefHeight="25.0" prefWidth="92.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Resend" textFill="WHITE" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
                </children>
             </GridPane>
             <Label text="Label" />
             <Label prefHeight="40.0" prefWidth="644.0" style="-fx-background-color: rgba(74, 101, 114, 1); -fx-background-radius: 0 0 10 10;" GridPane.rowIndex="2" />
-            <Hyperlink onAction="#forgotPassOnAction" prefHeight="23.0" prefWidth="643.0" style="-fx-alignment: center;" text="Forgot Password" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="2" />
+            <Hyperlink fx:id="forgotPasswordTxt" onAction="#forgotPassOnAction" prefHeight="23.0" prefWidth="643.0" style="-fx-alignment: center;" text="Forgot Password" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="2" />
          </children>
       </GridPane>
       <GridPane fx:id="welcomePane" GridPane.columnIndex="1" GridPane.rowIndex="1">

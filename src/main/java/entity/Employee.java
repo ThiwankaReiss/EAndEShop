@@ -15,7 +15,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
-    @Column(name = "username", nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
     private String position;
     @Column(name = "contact", nullable = false)
