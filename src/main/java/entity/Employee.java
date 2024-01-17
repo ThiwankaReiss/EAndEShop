@@ -1,19 +1,17 @@
 package entity;
 
-import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @Data
 @ToString
 @Entity
+@SequenceGenerator(name = "employee_sequence", sequenceName = "employee_sequence", allocationSize = 1 )
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_sequence")
     private Long userId;
     @Column(name = "email", nullable = false)
     private String email;

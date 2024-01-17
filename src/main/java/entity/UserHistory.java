@@ -19,6 +19,6 @@ public class UserHistory {
     @Id
     private String userId;
     private String date;
-    private String time;
-    private int lastindex;
+    private String timeEnter;
+    private String timeExit;
 }

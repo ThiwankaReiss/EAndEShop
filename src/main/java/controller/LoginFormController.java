@@ -228,7 +228,7 @@ public class LoginFormController {
     private void sendEmail(String email) {
         // Sender's email address and password
         String senderEmail = "prelanr@gmail.com";
-        String senderPassword = "ovtz yjsf bfhx otln";
+        String senderPassword = "ibmn kdvy pobz wuvx ";
 
         // Recipient's email address
         String recipientEmail = email;

@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dto.CustomerDto;
 import dto.EmployeeDto;
 import dto.tm.EmployeeTm;
 import javafx.animation.Animation;
@@ -31,6 +32,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class AddEmployeeFormController {
@@ -59,7 +62,7 @@ public class AddEmployeeFormController {
     private EmployeeDto employeeDto;
 
     private Boolean positionStatus;
-    private Long SelctedUser;
+    private Long SelctedUser=null;
 
     public void initialize() throws SQLException, ClassNotFoundException {
         Long userId = UserInstanceController.getInstance().getUserId();
@@ -92,7 +95,7 @@ public class AddEmployeeFormController {
 
             }
         });
-
+        addMenuItems();
 
 
 
@@ -314,10 +317,12 @@ public class AddEmployeeFormController {
             }
 
         }
+        addMenuItems();
 
     }
 
     public void reloadBtnOnAction(ActionEvent actionEvent) {
+
         clearFields();
     }
 
@@ -344,7 +349,19 @@ public class AddEmployeeFormController {
             }
 
         }
+        addMenuItems();
 
+    }
+
+
+    private void clearFields() {
+        employeeTbl.refresh();
+        SelctedUser=null;
+        JFXTextField [] textFields={nameTextField,emailTextField
+                ,contactTextField,passwordTextField,positionTextField};
+        for (JFXTextField textField:textFields) {
+            textField.clear();
+        }
     }
     private boolean isValidUpdatableUser() throws SQLException, ClassNotFoundException {
         JFXTextField [] textFields={nameTextField,emailTextField
@@ -358,6 +375,27 @@ public class AddEmployeeFormController {
         }
 
         List<EmployeeDto> dtoList = employeeBo.allEmployees();
+        if(!validatePhoneNumber(contactTextField.getText())){
+            return false;
+        }
+        if(!isValidEmail(emailTextField.getText())){
+            new Alert(Alert.AlertType.ERROR,"Invalid email.").show();
+            return false;
+        }
+
+        boolean isUpdatable=false;
+
+        for (EmployeeDto dto:dtoList) {
+            if(SelctedUser != null){
+                isUpdatable=true;
+            }
+
+        }
+        if(!isUpdatable){
+            new Alert(Alert.AlertType.ERROR,"Please click add.Employee must be added to be updated").show();
+            return false;
+        }
+
 
         for (EmployeeDto dto:dtoList) {
             if(!SelctedUser.equals(dto.getUserId())){
@@ -376,15 +414,6 @@ public class AddEmployeeFormController {
         return true;
     }
 
-    private void clearFields() {
-        employeeTbl.refresh();
-        JFXTextField [] textFields={nameTextField,emailTextField
-                ,contactTextField,passwordTextField,positionTextField};
-        for (JFXTextField textField:textFields) {
-            textField.clear();
-        }
-    }
-
     private boolean isValidUser() throws SQLException, ClassNotFoundException {
         JFXTextField [] textFields={nameTextField,emailTextField
                 ,contactTextField,passwordTextField,positionTextField};
@@ -397,6 +426,14 @@ public class AddEmployeeFormController {
         }
 
         List<EmployeeDto> dtoList = employeeBo.allEmployees();
+
+        if(!validatePhoneNumber(contactTextField.getText())){
+            return false;
+        }
+        if(!isValidEmail(emailTextField.getText())){
+            new Alert(Alert.AlertType.ERROR,"Invalid email.").show();
+            return false;
+        }
 
         for (EmployeeDto dto:dtoList) {
             String[] dtoAttributes={dto.getName(),
@@ -433,8 +470,7 @@ public class AddEmployeeFormController {
         lblDate.setText(formattedDate);
     }
 
-    public void positionMenuBtnOnAction(MouseEvent actionEvent) throws SQLException, ClassNotFoundException {
-
+    public void addMenuItems() throws SQLException, ClassNotFoundException {
         List<EmployeeDto> dtoList = employeeBo.allEmployees();
         ArrayList <String> positions=new ArrayList<>();
 
@@ -470,7 +506,83 @@ public class AddEmployeeFormController {
             }
 
         }
+    }
+
+    public void positionMenuBtnOnAction(MouseEvent actionEvent) throws SQLException, ClassNotFoundException {
+
+//        List<EmployeeDto> dtoList = employeeBo.allEmployees();
+//        ArrayList <String> positions=new ArrayList<>();
+//
+//        for (EmployeeDto dto:dtoList) {
+//            Boolean present=false ;
+//            for (String position:positions) {
+//                if (position.equals(dto.getPosition())){
+//                    present=true;
+//                }
+//            }
+//            if(!present){
+//                positions.add(dto.getPosition());
+//            }
+//        }
+//
+//        ObservableList<MenuItem> items=positionMenuBtn.getItems();
+//        for (String position:positions) {
+//            boolean isNewPosition=true;
+//            for (MenuItem item:items) {
+//
+//                if(position.equals(item.getText())){
+//                    isNewPosition=false;
+//                }
+//
+//            }
+//            if (isNewPosition){
+//                MenuItem itm=new MenuItem(position);
+//                positionMenuBtn.getItems().add(itm);
+//                itm.setOnAction(e->{
+//                    positionTextField.setText(itm.getText());
+//                });
+//
+//            }
+//
+//        }
 
 
+    }
+    public static boolean validatePhoneNumber(String phoneNumber) {
+
+        if (phoneNumber != null && phoneNumber.length() == 10) {
+
+            char firstDigit = phoneNumber.charAt(0);
+            if (firstDigit == '0') {
+
+                for (int i = 0; i < phoneNumber.length(); i++) {
+                    if (!Character.isDigit(phoneNumber.charAt(i))) {
+                        new Alert(Alert.AlertType.ERROR,"Phone number can have only digits").show();
+                        return false;
+                    }
+                }
+                return true;
+            }else{
+                new Alert(Alert.AlertType.ERROR,"First number must be zero").show();
+                return false;
+            }
+        }
+        new Alert(Alert.AlertType.ERROR,"Phone number must have 10 digits").show();
+        return false;
+    }
+
+    // Using Chat gpt
+    public static boolean isValidEmail(String email) {
+        // Define the regular expression for a valid email address
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+        // Create a Pattern object
+        Pattern pattern = Pattern.compile(emailRegex);
+
+        // Create a matcher object
+        Matcher matcher = pattern.matcher(email);
+
+        // Return true if the email matches the pattern, otherwise false
+        return matcher.matches();
     }
 }

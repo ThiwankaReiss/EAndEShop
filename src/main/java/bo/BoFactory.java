@@ -1,5 +1,6 @@
 package bo;
 
+import bo.custom.impl.CustomerBoImpl;
 import bo.custom.impl.EmployeeBoImpl;
 import dao.util.BoType;
 
@@ -16,6 +17,7 @@ public class BoFactory {
     public <T extends SupperBo>T getBo(BoType type) throws SQLException, ClassNotFoundException {
         switch (type){
             case EMPLOYEE:return (T) new EmployeeBoImpl();
+            case CUSTOMER:return (T) new CustomerBoImpl();
 //            case ITEM:return (T) new CustomerBoImpl();
         }
         return null;
