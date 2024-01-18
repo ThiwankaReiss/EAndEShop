@@ -66,7 +66,7 @@ public class AddEmployeeFormController {
 
     public void initialize() throws SQLException, ClassNotFoundException {
         Long userId = UserInstanceController.getInstance().getUserId();
-        allEmployees = employeeBo.allEmployees();
+        allEmployees = employeeBo.getAll();
         for (EmployeeDto dto: allEmployees) {
             if(dto.getUserId().equals(userId)){
                 employeeDto=dto;
@@ -117,7 +117,7 @@ public class AddEmployeeFormController {
         ObservableList<EmployeeTm> tmList = FXCollections.observableArrayList();
 
         try {
-            List<EmployeeDto> dtoList = employeeBo.allEmployees();
+            List<EmployeeDto> dtoList = employeeBo.getAll();
 
             for (EmployeeDto dto:dtoList) {
                 JFXButton btn = new JFXButton("Delete");
@@ -163,7 +163,7 @@ public class AddEmployeeFormController {
     private void deleteEmployee(Long id) {
         if(!id.equals(1)){
             try {
-                boolean isDeleted = employeeBo.deleteEmployee(id);
+                boolean isDeleted = employeeBo.delete(id);
                 if (isDeleted){
                     new Alert(Alert.AlertType.INFORMATION,"Employee Deleted!").show();
                     loadTable();
@@ -290,7 +290,7 @@ public class AddEmployeeFormController {
 
     public void updateBtnOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         if(isValidUpdatableUser()){
-            List<EmployeeDto> dtoList = employeeBo.allEmployees();
+            List<EmployeeDto> dtoList = employeeBo.getAll();
             EmployeeDto dto = null;
             for (EmployeeDto employee:dtoList) {
                 if(SelctedUser.equals(employee.getUserId())){
@@ -303,7 +303,7 @@ public class AddEmployeeFormController {
             dto.setEmail(emailTextField.getText());
             dto.setPassword(passwordTextField.getText());
             dto.setPosition(positionTextField.getText());
-            boolean isAdded=employeeBo.updateEmployee(dto);
+            boolean isAdded=employeeBo.update(dto);
 
             if(isAdded){
                 clearFields();
@@ -336,7 +336,7 @@ public class AddEmployeeFormController {
             dto.setPassword(passwordTextField.getText());
             dto.setPosition(positionTextField.getText());
             dto.setDescription("Click edit profile button to add a description about you");
-            boolean isAdded=employeeBo.saveEmployee(dto);
+            boolean isAdded=employeeBo.save(dto);
             if(isAdded){
                 clearFields();
                 try {
@@ -374,7 +374,7 @@ public class AddEmployeeFormController {
             }
         }
 
-        List<EmployeeDto> dtoList = employeeBo.allEmployees();
+        List<EmployeeDto> dtoList = employeeBo.getAll();
         if(!validatePhoneNumber(contactTextField.getText())){
             return false;
         }
@@ -425,7 +425,7 @@ public class AddEmployeeFormController {
             }
         }
 
-        List<EmployeeDto> dtoList = employeeBo.allEmployees();
+        List<EmployeeDto> dtoList = employeeBo.getAll();
 
         if(!validatePhoneNumber(contactTextField.getText())){
             return false;
@@ -471,7 +471,7 @@ public class AddEmployeeFormController {
     }
 
     public void addMenuItems() throws SQLException, ClassNotFoundException {
-        List<EmployeeDto> dtoList = employeeBo.allEmployees();
+        List<EmployeeDto> dtoList = employeeBo.getAll();
         ArrayList <String> positions=new ArrayList<>();
 
         for (EmployeeDto dto:dtoList) {
@@ -585,4 +585,5 @@ public class AddEmployeeFormController {
         // Return true if the email matches the pattern, otherwise false
         return matcher.matches();
     }
+
 }

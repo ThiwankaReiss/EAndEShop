@@ -63,7 +63,7 @@ public class EmployeeHomeFormController {
     public void initialize() throws SQLException, ClassNotFoundException {
 
         Long userId = UserInstanceController.getInstance().getUserId();
-        allEmployees = employeeBo.allEmployees();
+        allEmployees = employeeBo.getAll();
         for (EmployeeDto dto: allEmployees) {
             if(dto.getUserId().equals(userId)){
                 employeeDto=dto;
@@ -207,7 +207,7 @@ public class EmployeeHomeFormController {
         }
 
         if(isValidUpdatableUser()){
-            employeeBo.updateEmployee(new EmployeeDto(
+            employeeBo.update(new EmployeeDto(
                     employeeDto.getUserId(),
                     emailTextField.getText(),
                     employeeDto.getPosition(),
@@ -231,7 +231,7 @@ public class EmployeeHomeFormController {
             }
         }
 
-        List<EmployeeDto> dtoList = employeeBo.allEmployees();
+        List<EmployeeDto> dtoList = employeeBo.getAll();
 
         for (EmployeeDto dto:dtoList) {
             if(!employeeDto.getUserId().equals(dto.getUserId())){

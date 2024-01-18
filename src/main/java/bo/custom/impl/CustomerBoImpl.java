@@ -13,8 +13,33 @@ import java.util.List;
 
 public class CustomerBoImpl implements CustomerBo {
     private CustomerDao customerDao= DaoFactory.getInstance().getDao(DaoType.CUSTOMER);
+
     @Override
-    public List<CustomerDto> allCustomers() throws SQLException, ClassNotFoundException {
+    public boolean save(CustomerDto dto) throws SQLException, ClassNotFoundException {
+        Customer customer=new Customer();
+        customer.setName(dto.getName());
+        customer.setEmail(dto.getEmail());
+        customer.setContact(dto.getContact());
+        return customerDao.save(customer);
+    }
+
+    @Override
+    public boolean update(CustomerDto dto) throws SQLException, ClassNotFoundException {
+        return customerDao.update(new Customer(
+                dto.getCustomerId(),
+                dto.getName(),
+                dto.getContact(),
+                dto.getEmail()
+        ));
+    }
+
+    @Override
+    public boolean delete(Long value) throws SQLException, ClassNotFoundException {
+        return customerDao.delete(value);
+    }
+
+    @Override
+    public List<CustomerDto> getAll() throws SQLException, ClassNotFoundException {
         List<CustomerDto> list=new ArrayList<>();
         List<Customer> entityLIst=customerDao.getAll();
 
@@ -30,32 +55,7 @@ public class CustomerBoImpl implements CustomerBo {
     }
 
     @Override
-    public boolean saveCustomer(CustomerDto dto) throws SQLException, ClassNotFoundException {
-        Customer customer=new Customer();
-        customer.setName(dto.getName());
-        customer.setEmail(dto.getEmail());
-        customer.setContact(dto.getContact());
-        return customerDao.save(customer);
-    }
-
-    @Override
-    public boolean updateCustomer(CustomerDto dto) throws SQLException, ClassNotFoundException {
-        return customerDao.update(new Customer(
-                dto.getCustomerId(),
-                dto.getName(),
-                dto.getContact(),
-                dto.getEmail()
-        ));
-
-    }
-
-    @Override
-    public boolean deleteCustomer(Long id) throws SQLException, ClassNotFoundException {
-        return customerDao.delete(id);
-    }
-
-    @Override
-    public Long getNextCustId() throws SQLException {
+    public Long getNextId() throws SQLException {
         return customerDao.getNextCustId();
     }
 }

@@ -1,8 +1,6 @@
 package dao;
 
-import dao.custom.impl.CustomerDaoImpl;
-import dao.custom.impl.EmployeeDaoImpl;
-import dao.custom.impl.UserHistoryDaoImpl;
+import dao.custom.impl.*;
 import dao.util.DaoType;
 
 public class DaoFactory {
@@ -19,6 +17,8 @@ public class DaoFactory {
             case EMPLOYEE:return (T)new EmployeeDaoImpl();
             case USERHISTORY:return (T)new UserHistoryDaoImpl();
             case CUSTOMER:return (T)new CustomerDaoImpl();
+            case ITEM:return (T)new ItemDaoImpl();
+            case PART:return (T)new PartDaoImpl();
         }
         return null;
     }

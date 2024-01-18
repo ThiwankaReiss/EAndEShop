@@ -2,11 +2,12 @@ package bo.custom;
 
 import bo.CrudBo;
 import dto.CustomerDto;
-import dto.EmployeeDto;
+import dto.ItemDto;
+import dto.PartDto;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CustomerBo extends CrudBo<CustomerDto> {
+public interface ItemBo extends CrudBo<ItemDto> {
 
 }

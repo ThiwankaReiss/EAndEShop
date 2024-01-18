@@ -23,7 +23,7 @@ public class OrderFormController {
     private Boolean positionStatus;
     public void initialize() throws SQLException, ClassNotFoundException {
         Long userId = UserInstanceController.getInstance().getUserId();
-        allEmployees = employeeBo.allEmployees();
+        allEmployees = employeeBo.getAll();
         for (EmployeeDto dto: allEmployees) {
             if(dto.getUserId().equals(userId)){
                 employeeDto=dto;

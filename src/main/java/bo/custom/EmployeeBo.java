@@ -1,14 +1,12 @@
 package bo.custom;
 
+import bo.CrudBo;
 import dto.EmployeeDto;
+import dto.ItemDto;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface EmployeeBo {
-    List<EmployeeDto> allEmployees() throws SQLException, ClassNotFoundException;
+public interface EmployeeBo extends CrudBo<EmployeeDto> {
 
-    boolean saveEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException;
-    boolean updateEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException;
-    boolean deleteEmployee(Long id) throws SQLException, ClassNotFoundException;
 }

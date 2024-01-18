@@ -15,8 +15,39 @@ import java.util.List;
 public class EmployeeBoImpl implements EmployeeBo {
     private EmployeeDao employeeDao= DaoFactory.getInstance().getDao(DaoType.EMPLOYEE);
 
+
     @Override
-    public List<EmployeeDto> allEmployees() throws SQLException, ClassNotFoundException {
+    public boolean save(EmployeeDto dto) throws SQLException, ClassNotFoundException {
+        Employee employee=new Employee();
+        employee.setName(dto.getName());
+        employee.setEmail(dto.getEmail());
+        employee.setContact(dto.getContact());
+        employee.setPosition(dto.getPosition());
+        employee.setPassword(dto.getPassword());
+        employee.setDescription(dto.getDescription());
+        return employeeDao.save(employee);
+    }
+
+    @Override
+    public boolean update(EmployeeDto dto) throws SQLException, ClassNotFoundException {
+        return employeeDao.update(new Employee(
+                dto.getUserId(),
+                dto.getEmail(),
+                dto.getPosition(),
+                dto.getContact(),
+                dto.getName(),
+                dto.getPassword(),
+                dto.getDescription()
+        ));
+    }
+
+    @Override
+    public boolean delete(Long value) throws SQLException, ClassNotFoundException {
+        return employeeDao.delete(value);
+    }
+
+    @Override
+    public List<EmployeeDto> getAll() throws SQLException, ClassNotFoundException {
         List<EmployeeDto> list=new ArrayList<>();
         List<Employee> entityLIst=employeeDao.getAll();
 
@@ -35,32 +66,7 @@ public class EmployeeBoImpl implements EmployeeBo {
     }
 
     @Override
-    public boolean saveEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException {
-        Employee employee=new Employee();
-        employee.setName(dto.getName());
-        employee.setEmail(dto.getEmail());
-        employee.setContact(dto.getContact());
-        employee.setPosition(dto.getPosition());
-        employee.setPassword(dto.getPassword());
-        employee.setDescription(dto.getDescription());
-        return employeeDao.save(employee);
+    public Long getNextId() throws SQLException {
+        return null;
     }
-
-    public boolean updateEmployee(EmployeeDto dto) throws SQLException, ClassNotFoundException {
-        return employeeDao.update(new Employee(
-                dto.getUserId(),
-                dto.getEmail(),
-                dto.getPosition(),
-                dto.getContact(),
-                dto.getName(),
-                dto.getPassword(),
-                dto.getDescription()
-        ));
-
-    }
-
-    public boolean deleteEmployee(Long id) throws SQLException, ClassNotFoundException {
-        return employeeDao.delete(id);
-    }
-
 }

@@ -13,21 +13,25 @@ import dto.CustomerDto;
 import dto.EmployeeDto;
 import dto.tm.CustomerTm;
 import dto.tm.EmployeeTm;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,6 +50,8 @@ public class CustomerFormController {
     public JFXTextField nameTextField;
     public JFXTextField contactTextField;
     public JFXTextField emailTextField;
+    public Label lblDate;
+    public Label lblTime;
     private EmployeeBo employeeBo = new EmployeeBoImpl();
     private List<EmployeeDto> allEmployees;
     private EmployeeDto employeeDto;
@@ -54,7 +60,7 @@ public class CustomerFormController {
     private CustomerTm selectedCustomer;
     public void initialize() throws SQLException, ClassNotFoundException {
         Long userId = UserInstanceController.getInstance().getUserId();
-        allEmployees = employeeBo.allEmployees();
+        allEmployees = employeeBo.getAll();
         for (EmployeeDto dto: allEmployees) {
             if(dto.getUserId().equals(userId)){
                 employeeDto=dto;
@@ -80,9 +86,11 @@ public class CustomerFormController {
             }
         });
         customerIdTextField.setEditable(false);
-        customerIdTextField.setText(String.valueOf(customerBo.getNextCustId()));
+        customerIdTextField.setText(String.valueOf(customerBo.getNextId()));
         selectedCustomer=new CustomerTm();
-        selectedCustomer.setCustomerId(customerBo.getNextCustId());
+        selectedCustomer.setCustomerId(customerBo.getNextId());
+        calculateTime();
+        calculateDate();
 
     }
 
@@ -90,7 +98,7 @@ public class CustomerFormController {
         ObservableList<CustomerTm> tmList = FXCollections.observableArrayList();
 
         try {
-            List<CustomerDto> dtoList = customerBo.allCustomers();
+            List<CustomerDto> dtoList = customerBo.getAll();
 
             for (CustomerDto dto:dtoList) {
                 JFXButton btn = new JFXButton("Delete");
@@ -135,7 +143,7 @@ public class CustomerFormController {
     private void delteCustomer(Long customerId) {
 
         try {
-            boolean isDeleted = customerBo.deleteCustomer(customerId);
+            boolean isDeleted = customerBo.delete(customerId);
             if (isDeleted){
                 new Alert(Alert.AlertType.INFORMATION,"Customer Deleted!").show();
                 loadTable();
@@ -277,7 +285,7 @@ public class CustomerFormController {
                     emailTextField.getText()
             );
 
-            boolean isAdded=customerBo.updateCustomer(dto);
+            boolean isAdded=customerBo.update(dto);
 
             if(isAdded){
                 clearFields();
@@ -303,7 +311,7 @@ public class CustomerFormController {
             dto.setContact(contactTextField.getText());
             dto.setEmail(emailTextField.getText());
 
-            boolean isAdded=customerBo.saveCustomer(dto);
+            boolean isAdded=customerBo.save(dto);
             if(isAdded){
                 clearFields();
                 try {
@@ -327,7 +335,7 @@ public class CustomerFormController {
             textField.clear();
 
         }
-        customerIdTextField.setText(String.valueOf(customerBo.getNextCustId()));
+        customerIdTextField.setText(String.valueOf(customerBo.getNextId()));
     }
 
     private boolean isValidUser(boolean update) throws SQLException, ClassNotFoundException {
@@ -341,7 +349,7 @@ public class CustomerFormController {
             }
         }
 
-        List<CustomerDto> dtoList = customerBo.allCustomers();
+        List<CustomerDto> dtoList = customerBo.getAll();
         if(!validatePhoneNumber(contactTextField.getText())){
             return false;
         }
@@ -415,5 +423,25 @@ public class CustomerFormController {
 
         // Return true if the email matches the pattern, otherwise false
         return matcher.matches();
+    }
+    private void calculateTime() {
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.ZERO,
+                actionEvent -> lblTime.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+        ), new KeyFrame(Duration.seconds(1)));
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private void calculateDate(){
+        LocalDate currentDate = LocalDate.now();
+
+        // Define a date formatter to format the date as a string
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        // Format the date and print it
+        String formattedDate = currentDate.format(dateFormatter);
+        lblDate.setText(formattedDate);
     }
 }

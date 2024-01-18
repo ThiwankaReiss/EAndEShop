@@ -23,7 +23,7 @@ public class PlaceOrderFormController {
     private Boolean positionStatus;
     public void initialize() throws SQLException, ClassNotFoundException {
         Long userId = UserInstanceController.getInstance().getUserId();
-        allEmployees = employeeBo.allEmployees();
+        allEmployees = employeeBo.getAll();
         for (EmployeeDto dto: allEmployees) {
             if(dto.getUserId().equals(userId)){
                 employeeDto=dto;
@@ -142,5 +142,15 @@ public class PlaceOrderFormController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void newCustBtnOnAction(ActionEvent actionEvent) {
+    }
+
+    public void newItmOnAction(ActionEvent actionEvent) {
+    }
+
+    public void newPartBtnOnAction(ActionEvent actionEvent) {
+        
     }
 }

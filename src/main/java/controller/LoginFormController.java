@@ -87,7 +87,7 @@ public class LoginFormController {
     }
 
     private void saveAdmin() throws SQLException, ClassNotFoundException {
-        allEmployees = employeeBo.allEmployees();
+        allEmployees = employeeBo.getAll();
         boolean isSaved=false;
         for (EmployeeDto dto:allEmployees) {
 
@@ -102,13 +102,13 @@ public class LoginFormController {
             dto.setPassword("ThiwankaReiss");
             dto.setPosition("Admin");
             dto.setDescription("Hi I'm Thiwanka .I'm the System administrator of E and E Shop. I am highly experience in this industry. ");
-            employeeBo.saveEmployee(dto);
+            employeeBo.save(dto);
         }
     }
 
     public void signInBtnOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         if(signInBtn.getText().equalsIgnoreCase("Sign In")){
-            allEmployees = employeeBo.allEmployees();
+            allEmployees = employeeBo.getAll();
             boolean sendMessage=true;
             for (EmployeeDto dto: allEmployees) {
                 if((dto.getName().equals(userNameTextField.getText()) &&
@@ -147,7 +147,7 @@ public class LoginFormController {
     private String isAUser() throws SQLException, ClassNotFoundException {
         String userName=userNameTextField.getText();
         if(!(userName.equals(null) || userName.equals(""))){
-            allEmployees = employeeBo.allEmployees();
+            allEmployees = employeeBo.getAll();
             for (EmployeeDto dto:allEmployees) {
                 if(dto.getName().equals(userName)){
                     otpDto=dto;
