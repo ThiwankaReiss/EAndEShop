@@ -14,6 +14,13 @@ import javax.persistence.*;
 @Entity
 @SequenceGenerator(name = "item_sequence", sequenceName = "item_sequence", allocationSize = 1 )
 public class Item {
+//    public Item(Long itemId, String name, String category, String standardFee) {
+//        this.itemId = itemId;
+//        this.name = name;
+//        this.category = category;
+//        this.standardFee = standardFee;
+//    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_sequence")
     private Long itemId;

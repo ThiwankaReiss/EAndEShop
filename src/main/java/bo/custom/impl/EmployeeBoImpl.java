@@ -15,7 +15,6 @@ import java.util.List;
 public class EmployeeBoImpl implements EmployeeBo {
     private EmployeeDao employeeDao= DaoFactory.getInstance().getDao(DaoType.EMPLOYEE);
 
-
     @Override
     public boolean save(EmployeeDto dto) throws SQLException, ClassNotFoundException {
         Employee employee=new Employee();

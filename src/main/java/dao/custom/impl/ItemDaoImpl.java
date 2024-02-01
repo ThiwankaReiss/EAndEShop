@@ -78,8 +78,9 @@ public class ItemDaoImpl implements ItemDao {
         session.close();
         return list;
     }
+
     @Override
-    public Long getNextItemId() throws SQLException {
+    public Long getNextId() throws SQLException {
         String sql = "SELECT * FROM item_sequence";
         PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
         ResultSet resultSet = pstm.executeQuery();
@@ -88,4 +89,5 @@ public class ItemDaoImpl implements ItemDao {
         }
         return null;
     }
+
 }

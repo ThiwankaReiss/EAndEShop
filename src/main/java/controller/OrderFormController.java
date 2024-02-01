@@ -1,12 +1,27 @@
 package controller;
 
 import bo.custom.EmployeeBo;
+import bo.custom.OrderBo;
 import bo.custom.impl.EmployeeBoImpl;
+import bo.custom.impl.OrderBoImpl;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import dto.CustomerDto;
 import dto.EmployeeDto;
+import dto.OrderDto;
+import dto.tm.CustomerTm;
+import dto.tm.OrdersTm;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -14,10 +29,21 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+
 public class OrderFormController {
     public GridPane pane;
     public MenuItem salesReportBtn;
+    public TreeTableColumn colCustId;
+    public TreeTableColumn colStatus;
+    public TreeTableColumn colOrderId;
+    public TreeTableColumn colTotal;
+    public TreeTableColumn colChangeStatus;
+    public TreeTableColumn colView;
+    public TreeTableColumn colDelete;
+    public JFXTreeTableView<OrdersTm> ordersTbl;
+    public TreeTableColumn colEmployeeId;
     private EmployeeBo employeeBo = new EmployeeBoImpl();
+    private OrderBo orderBo=new OrderBoImpl();
     private List<EmployeeDto> allEmployees;
     private EmployeeDto employeeDto;
     private Boolean positionStatus;
@@ -34,6 +60,110 @@ public class OrderFormController {
             salesReportBtn.setVisible(false);
         }
 
+
+        colOrderId.setCellValueFactory(new TreeItemPropertyValueFactory<>("orderId"));
+        colCustId.setCellValueFactory(new TreeItemPropertyValueFactory<>("customerId"));
+        colEmployeeId.setCellValueFactory(new TreeItemPropertyValueFactory<>("employeeId"));
+        colStatus.setCellValueFactory(new TreeItemPropertyValueFactory<>("status"));
+        colTotal.setCellValueFactory(new TreeItemPropertyValueFactory<>("total"));
+        colChangeStatus.setCellValueFactory(new TreeItemPropertyValueFactory<>("changeStatusBtn"));
+        colView.setCellValueFactory(new TreeItemPropertyValueFactory<>("viewBtn"));
+        colDelete.setCellValueFactory(new TreeItemPropertyValueFactory<>("deleteBtn"));
+
+        loadTable();
+//
+//        ordersTbl.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+//            try {
+//                setData(newValue.getValue());
+//            }catch (NullPointerException e){
+//
+//            }
+//        });
+    }
+
+    private void loadTable() {
+        ObservableList<OrdersTm> tmList = FXCollections.observableArrayList();
+
+        try {
+            List<OrderDto> dtoList = orderBo.getAll();
+
+            for (OrderDto dto:dtoList) {
+                JFXButton deleteBtn = new JFXButton("Delete");
+                JFXButton changeStatusBtn = new JFXButton("Change Status");
+                JFXButton viewBtn = new JFXButton("View");
+                OrdersTm c = new OrdersTm(
+                        dto.getCustomerId(),
+                        dto.getOrderId(),
+                        dto.getEmployeeId(),
+                        dto.getOrderStaus(),
+                        dto.getTotal(),
+                        changeStatusBtn,
+                        viewBtn,
+                        deleteBtn
+                );
+
+                deleteBtn.setStyle("-fx-background-color: white");
+                deleteBtn.setOnAction(actionEvent -> {
+                    try {
+                        System.out.println("delete");
+                        orderBo.delete(c.getOrderId());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                changeStatusBtn.setStyle("-fx-background-color: white");
+                changeStatusBtn.setOnAction(actionEvent -> {
+                    System.out.println("status");
+                    try {
+                        setOrderInstance(dto);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                viewBtn.setStyle("-fx-background-color: white");
+                viewBtn.setOnAction(actionEvent -> {
+                    System.out.println("add");
+                    try {
+                        setOrderInstance(dto);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+
+
+                tmList.add(c);
+            }
+            try {
+                TreeItem<OrdersTm> treeItem = new RecursiveTreeItem<>(tmList, RecursiveTreeObject::getChildren);
+
+                ordersTbl.setRoot(treeItem);
+                ordersTbl.setShowRoot(false);
+            }catch (Exception e){
+
+            }
+
+            TreeTableColumn [] t={colCustId,colEmployeeId,colOrderId,colStatus,colTotal,colChangeStatus,colView,colDelete};
+            for (TreeTableColumn col:t) {
+                col.setStyle("-fx-text-fill: white;-fx-background-color :  rgba(74, 101, 114, 1);");
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setOrderInstance(OrderDto orderDto) throws SQLException, ClassNotFoundException {
+        OrderInstanceController.getInstance().setUserId(orderDto);
     }
 
     public void orderReportBtnOnAction(ActionEvent actionEvent) {
@@ -101,7 +231,7 @@ public class OrderFormController {
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/PlaceOrderForm.fxml"))));
             stage.setResizable(true);
-            stage.setTitle("Place Order Form");
+            stage.setTitle("Place Orders Form");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,10 +243,10 @@ public class OrderFormController {
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/OrderForm.fxml"))));
             stage.setResizable(true);
-            stage.setTitle("Order Form");
+            stage.setTitle("Orders Form");
             stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+
         }
     }
 

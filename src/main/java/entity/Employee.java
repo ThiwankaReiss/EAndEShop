@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @ToString
 @Entity
@@ -24,15 +25,15 @@ public class Employee {
     private String description;
 
 
-    public Employee(Long userId, String email, String position, String contact, String name, String password, String description) {
-        this.userId = userId;
-        this.email = email;
-        this.position = position;
-        this.contact = contact;
-        this.name = name;
-        this.password = password;
-        this.description = description;
-    }
+//    public Employee(Long userId, String email, String position, String contact, String name, String password, String description) {
+//        this.userId = userId;
+//        this.email = email;
+//        this.position = position;
+//        this.contact = contact;
+//        this.name = name;
+//        this.password = password;
+//        this.description = description;
+//    }
 
 
 

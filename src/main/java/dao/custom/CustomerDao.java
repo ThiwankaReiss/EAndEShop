@@ -7,5 +7,5 @@ import entity.Employee;
 import java.sql.SQLException;
 
 public interface CustomerDao extends CrudDao<Customer> {
-    public Long getNextCustId() throws SQLException;
+
 }

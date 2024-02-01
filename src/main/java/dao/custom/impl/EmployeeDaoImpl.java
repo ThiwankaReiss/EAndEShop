@@ -81,4 +81,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
         session.close();
         return list;
     }
+
+    @Override
+    public Long getNextId() throws SQLException {
+        return null;
+    }
 }

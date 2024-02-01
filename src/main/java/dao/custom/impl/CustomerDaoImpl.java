@@ -81,9 +81,8 @@ public class CustomerDaoImpl implements CustomerDao {
         return list;
     }
 
-
     @Override
-    public Long getNextCustId() throws SQLException {
+    public Long getNextId() throws SQLException {
         String sql = "SELECT * FROM customer_sequence";
         PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql);
         ResultSet resultSet = pstm.executeQuery();
@@ -92,4 +91,5 @@ public class CustomerDaoImpl implements CustomerDao {
         }
         return null;
     }
+
 }

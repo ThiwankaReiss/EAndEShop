@@ -223,8 +223,8 @@
          </columnConstraints>
          <rowConstraints>
             <RowConstraints maxHeight="64.33331298828125" minHeight="1.0" prefHeight="32.666656494140625" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="188.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="43.3333740234375" minHeight="2.0" prefHeight="2.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="180.66668701171875" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="43.3333740234375" minHeight="2.0" prefHeight="19.33331298828125" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Items List" wrappingWidth="138.80340576171875" GridPane.columnIndex="1">

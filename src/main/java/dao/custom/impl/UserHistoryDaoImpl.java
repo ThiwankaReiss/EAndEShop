@@ -34,4 +34,9 @@ public class UserHistoryDaoImpl implements UserHistoryDao {
     public List<UserHistory> getAll() throws SQLException, ClassNotFoundException {
         return null;
     }
+
+    @Override
+    public Long getNextId() throws SQLException {
+        return null;
+    }
 }

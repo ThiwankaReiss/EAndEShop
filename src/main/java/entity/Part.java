@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,6 +16,7 @@ import javax.persistence.*;
 @Entity
 @SequenceGenerator(name = "part_sequence", sequenceName = "part_sequence", allocationSize = 1 )
 public class Part {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "part_sequence")
     private Long partId;

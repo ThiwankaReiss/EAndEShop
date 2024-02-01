@@ -7,5 +7,5 @@ import entity.Part;
 import java.sql.SQLException;
 
 public interface PartDao extends CrudDao<Part> {
-    Long getNextId() throws SQLException;
+
 }

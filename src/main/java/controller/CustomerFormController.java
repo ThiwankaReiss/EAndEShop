@@ -232,7 +232,7 @@ public class CustomerFormController {
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/PlaceOrderForm.fxml"))));
             stage.setResizable(true);
-            stage.setTitle("Place Order Form");
+            stage.setTitle("Place Orders Form");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -244,10 +244,10 @@ public class CustomerFormController {
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/OrderForm.fxml"))));
             stage.setResizable(true);
-            stage.setTitle("Order Form");
+            stage.setTitle("Orders Form");
             stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+
         }
     }
 

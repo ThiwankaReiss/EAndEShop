@@ -60,6 +60,6 @@ public class ItemBoImpl implements ItemBo {
 
     @Override
     public Long getNextId() throws SQLException {
-        return itemDao.getNextItemId();
+        return itemDao.getNextId();
     }
 }

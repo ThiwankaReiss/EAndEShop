@@ -87,7 +87,9 @@ public class LoginFormController {
     }
 
     private void saveAdmin() throws SQLException, ClassNotFoundException {
+
         allEmployees = employeeBo.getAll();
+
         boolean isSaved=false;
         for (EmployeeDto dto:allEmployees) {
 

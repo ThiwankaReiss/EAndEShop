@@ -56,6 +56,6 @@ public class CustomerBoImpl implements CustomerBo {
 
     @Override
     public Long getNextId() throws SQLException {
-        return customerDao.getNextCustId();
+        return customerDao.getNextId();
     }
 }

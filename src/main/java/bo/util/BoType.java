@@ -1,5 +1,5 @@
 package bo.util;
 
 public enum BoType {
-   PART
+   EMPLOYEE,USERHISTORY,CUSTOMER,ITEM,PART,ORDER,ORDERDETAIL
 }
