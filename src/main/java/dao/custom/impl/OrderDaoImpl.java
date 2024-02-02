@@ -57,6 +57,32 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public boolean update(OrderDto entity) throws SQLException, ClassNotFoundException {
+        Session session=HibernateUtil.getSession();
+        Transaction transaction=session.beginTransaction();
+
+        try {
+
+            Orders existingEntity = session.get(Orders.class, entity.getOrderId());
+
+
+            existingEntity.setOrderStaus(entity.getOrderStaus());
+            existingEntity.setTotal(entity.getTotal());
+
+
+            session.update(existingEntity);
+
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
         return false;
     }
 

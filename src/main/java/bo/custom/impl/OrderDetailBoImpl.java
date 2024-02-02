@@ -14,12 +14,12 @@ public class OrderDetailBoImpl implements OrderDetailBo {
     private OrderDetailDao orderDetailDao= DaoFactory.getInstance().getDao(DaoType.ORDERDETAIL);
     @Override
     public boolean save(OrderDetailDto dto) throws SQLException, ClassNotFoundException {
-        return false;
+        return orderDetailDao.save(dto);
     }
 
     @Override
     public boolean update(OrderDetailDto dto) throws SQLException, ClassNotFoundException {
-        return false;
+        return orderDetailDao.update(dto);
     }
 
     @Override

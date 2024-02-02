@@ -15,10 +15,10 @@ public class OrderInstanceController {
         return orderInstanceController!=null ? orderInstanceController : (orderInstanceController=new OrderInstanceController());
     }
 
-    public OrderDto getOrderId(){
+    public OrderDto getSelectedOrder(){
         return orderDto;
     }
-    public void setUserId(OrderDto orderDto){
+    public void setSelectedOrder(OrderDto orderDto){
         this.orderDto=orderDto;
     }
 }

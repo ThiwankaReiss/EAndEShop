@@ -19,7 +19,7 @@ public class OrderBoImpl implements OrderBo {
 
     @Override
     public boolean update(OrderDto dto) throws SQLException, ClassNotFoundException {
-        return false;
+        return orderDao.update(dto);
     }
 
     @Override

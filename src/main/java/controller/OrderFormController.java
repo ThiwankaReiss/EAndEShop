@@ -117,6 +117,15 @@ public class OrderFormController {
                     System.out.println("status");
                     try {
                         setOrderInstance(dto);
+                        Stage stage = (Stage) pane.getScene().getWindow();
+                        try {
+                            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/UpdateOrderForm.fxml"))));
+                            stage.setResizable(true);
+                            stage.setTitle("Update Order From");
+                            stage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     } catch (ClassNotFoundException e) {
@@ -128,6 +137,15 @@ public class OrderFormController {
                     System.out.println("add");
                     try {
                         setOrderInstance(dto);
+                        Stage stage = (Stage) pane.getScene().getWindow();
+                        try {
+                            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/UpdateOrderForm.fxml"))));
+                            stage.setResizable(true);
+                            stage.setTitle("Update Order From");
+                            stage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     } catch (ClassNotFoundException e) {
@@ -192,7 +210,7 @@ public class OrderFormController {
     }
 
     public void setOrderInstance(OrderDto orderDto) throws SQLException, ClassNotFoundException {
-        OrderInstanceController.getInstance().setUserId(orderDto);
+        OrderInstanceController.getInstance().setSelectedOrder(orderDto);
     }
 
     public void orderReportBtnOnAction(ActionEvent actionEvent) {

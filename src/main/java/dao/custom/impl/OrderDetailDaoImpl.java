@@ -7,6 +7,7 @@ import dao.util.HibernateUtil;
 import dto.OrderDetailDto;
 import dto.OrderDto;
 import entity.Customer;
+import entity.Employee;
 import entity.OrderDetail;
 import entity.Orders;
 import org.hibernate.Session;
@@ -41,7 +42,34 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 
     @Override
     public boolean update(OrderDetailDto entity) throws SQLException, ClassNotFoundException {
+        Session session=HibernateUtil.getSession();
+        Transaction transaction=session.beginTransaction();
+
+        try {
+
+            OrderDetail existingEntity = session.get(OrderDetail.class, entity.getOrderDetailId());
+
+            existingEntity.setOrderId(entity.getOrderId());
+            existingEntity.setPartId(entity.getPartId());
+            existingEntity.setQuantity(entity.getQuantity());
+            existingEntity.setPrice(entity.getPrice());
+
+            session.update(existingEntity);
+
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
         return false;
+
     }
 
     @Override
