@@ -3,13 +3,11 @@ package controller;
 import bo.custom.EmployeeBo;
 import bo.custom.impl.EmployeeBoImpl;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import dto.EmployeeDto;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +22,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
@@ -34,10 +31,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class LoginFormController {
 
@@ -167,33 +160,6 @@ public class LoginFormController {
         return b+"";
     }
 
-//    public void scheduleSendMessage(int seconds) {
-//        // Create a scheduled executor service with a single thread
-//        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-//
-//        // Schedule the sendMessage() method to run after the specified minutes
-//        executorService.schedule(() -> expireOtp(), seconds, TimeUnit.SECONDS);
-//
-//        // Shutdown the executor service after the task is executed
-//        executorService.shutdown();
-//    }
-//
-//    public void expireOtp() {
-//        // Your logic to send a message goes here
-//        resendBtn.setVisible(false);
-//        otp="OtpTimeOut";
-//
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                // do your GUI stuff here
-//                signInBtn.setText("Send OTP");
-//                otpContDown.setText("");
-//                passwordTextField.setVisible(false);
-//            }
-//        });
-//
-//    }
 
     public void startCountdownTimer(Label label) {
 

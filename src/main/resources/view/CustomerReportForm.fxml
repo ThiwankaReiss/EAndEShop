@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TreeTableColumn?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<GridPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="437.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerReportFormController">
+<GridPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="421.0" prefWidth="636.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerReportFormController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="41.666656494140625" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="408.3333282470703" minHeight="10.0" prefHeight="395.3333435058594" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="42.66667175292969" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="344.0" minHeight="10.0" prefHeight="285.3333282470703" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="408.3333282470703" minHeight="10.0" prefHeight="45.000030517578125" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="408.3333282470703" minHeight="10.0" prefHeight="62.999969482421875" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
       <GridPane>
@@ -113,6 +120,58 @@
                   <Hyperlink onAction="#partsOnAction" prefHeight="52.0" prefWidth="84.0" style="-fx-alignment: center;" text="Parts" textFill="WHITE" />
                </children>
             </GridPane>
+         </children>
+      </GridPane>
+      <GridPane prefHeight="217.0" prefWidth="682.0" GridPane.rowIndex="1">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="312.0" minWidth="3.0" prefWidth="24.333343505859375" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="672.0" minWidth="10.0" prefWidth="627.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="609.9999694824219" minWidth="8.0" prefWidth="20.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="64.33331298828125" minHeight="1.0" prefHeight="32.666656494140625" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="188.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="43.3333740234375" minHeight="2.0" prefHeight="2.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Customer List" wrappingWidth="138.80340576171875" GridPane.columnIndex="1">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <GridPane prefHeight="142.0" prefWidth="621.0" style="-fx-background-color: rgba(52, 73, 85, 1); -fx-background-radius: 10 10 10 10;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.6666259765625" minWidth="4.66668701171875" prefWidth="20.333343505859375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="651.3333129882812" minWidth="10.0" prefWidth="617.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="541.6666870117188" minWidth="0.0" prefWidth="22.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="66.33334350585938" minHeight="0.0" prefHeight="7.333343505859375" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="180.66665649414062" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <JFXTreeTableView fx:id="customerTbl" prefHeight="102.0" prefWidth="540.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <columns>
+                        <TreeTableColumn fx:id="colId" prefWidth="130.33331298828125" text="Customer Id" />
+                        <TreeTableColumn fx:id="colName" prefWidth="109.66668701171875" text="Name" />
+                        <TreeTableColumn fx:id="colContact" prefWidth="148.3333740234375" text="Contact" />
+                        <TreeTableColumn fx:id="colEmail" prefWidth="205.33331298828125" text="Email" />
+                     </columns>
+                  </JFXTreeTableView>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+      <GridPane GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="563.6666870117188" minWidth="10.0" prefWidth="554.3333129882812" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="310.0" minWidth="10.0" prefWidth="81.66668701171875" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <JFXButton fx:id="printBtn" buttonType="RAISED" onAction="#printOnAction" prefHeight="25.0" prefWidth="71.0" ripplerFill="WHITE" style="-fx-background-color: #f9aa33;" text="Print" textFill="WHITE" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>
