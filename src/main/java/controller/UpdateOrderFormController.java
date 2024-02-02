@@ -97,6 +97,7 @@ public class UpdateOrderFormController {
 
         loadTable();
         loadParts();
+        loadStatus();
         partTbl.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
             try {
                 setData(newValue.getValue());
@@ -560,7 +561,35 @@ public class UpdateOrderFormController {
     public void reloadBtnOnAction(ActionEvent actionEvent) {
         clearFields();
     }
+    private void loadStatus() {
+        String [] status={"Pending","Processing","completed"};
+        for (String stat:status) {
+            MenuItem itm=new MenuItem(stat);
+            statusMenuBtn.getItems().add(itm);
+            itm.setOnAction(e->{
+                orderStatusTextField.setText(itm.getText());
+                orderDto.setOrderStaus(itm.getText());
+                OrderDto dt=new OrderDto();
+                dt.setOrderId(orderDto.getOrderId());
+                dt.setTotal(tot);
+                dt.setOrderStaus(orderDto.getOrderStaus());
+                boolean isOrderSaved= false;
+                try {
+                    isOrderSaved = orderBo.update(dt);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+                if(isOrderSaved){
+                    new Alert(Alert.AlertType.INFORMATION,"Updated successfully").show();
+                }else{
+                    new Alert(Alert.AlertType.ERROR,"Something went wrong").show();
+                }
+            });
+        }
 
+    }
 
 
 }
