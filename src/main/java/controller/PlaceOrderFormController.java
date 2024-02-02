@@ -588,12 +588,12 @@ public class PlaceOrderFormController {
             List<OrderDetailDto> list = new ArrayList<>();
             Long nextId=orderBo.getNextId();
             for (OrderDetailsTm tm:tmList) {
-                list.add(new OrderDetailDto(
-                        nextId,
-                        tm.getPartId(),
-                        tm.getQty(),
-                        tm.getPrice()
-                ));
+                OrderDetailDto dto=new OrderDetailDto();
+                dto.setOrderId(nextId);
+                dto.setPartId(tm.getPartId());
+                dto.setQuantity(tm.getQty());
+                dto.setPrice(tm.getPrice());
+                list.add(dto);
             }
 //        if (!tmList.isEmpty()){
             boolean isSaved = false;
@@ -613,6 +613,8 @@ public class PlaceOrderFormController {
                     clearFields(true);
                     selectedUpTm=null;
                     selectedPart=null;
+                    tmList.clear();
+                    partTbl.refresh();
                 }else{
                     new Alert(Alert.AlertType.ERROR,"Something went wrong!").show();
                 }

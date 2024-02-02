@@ -1,9 +1,12 @@
 package dao.custom.impl;
 
+import dao.DaoFactory;
 import dao.custom.OrderDetailDao;
+import dao.util.DaoType;
 import dao.util.HibernateUtil;
 import dto.OrderDetailDto;
 import dto.OrderDto;
+import entity.Customer;
 import entity.OrderDetail;
 import entity.Orders;
 import org.hibernate.Session;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailDaoImpl implements OrderDetailDao {
+
     @Override
     public boolean save(OrderDetailDto entity) throws SQLException, ClassNotFoundException {
         try{
@@ -42,7 +46,14 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
 
     @Override
     public boolean delete(Long value) throws SQLException, ClassNotFoundException {
-        return false;
+
+        Session session= HibernateUtil.getSession();
+        Transaction transaction=session.beginTransaction();
+        session.delete(session.find(OrderDetail.class,value));
+        transaction.commit();
+        session.close();
+
+        return true;
     }
 
     @Override
@@ -54,6 +65,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
         List<OrderDetailDto> odrDetailDto=new ArrayList<>();
         for (OrderDetail odr:list) {
             odrDetailDto.add(new OrderDetailDto(
+                    odr.getOrderDetailId(),
                     odr.getOrderId(),
                     odr.getPartId(),
                     odr.getQuantity(),

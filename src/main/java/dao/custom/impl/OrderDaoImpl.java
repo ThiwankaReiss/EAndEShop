@@ -62,7 +62,13 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public boolean delete(Long value) throws SQLException, ClassNotFoundException {
-        return false;
+
+        Session session= HibernateUtil.getSession();
+        Transaction transaction=session.beginTransaction();
+        session.delete(session.find(Orders.class,value));
+        transaction.commit();
+        session.close();
+        return true;
     }
 
     @Override

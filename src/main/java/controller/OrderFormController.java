@@ -2,14 +2,17 @@ package controller;
 
 import bo.custom.EmployeeBo;
 import bo.custom.OrderBo;
+import bo.custom.OrderDetailBo;
 import bo.custom.impl.EmployeeBoImpl;
 import bo.custom.impl.OrderBoImpl;
+import bo.custom.impl.OrderDetailBoImpl;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dto.CustomerDto;
 import dto.EmployeeDto;
+import dto.OrderDetailDto;
 import dto.OrderDto;
 import dto.tm.CustomerTm;
 import dto.tm.OrdersTm;
@@ -18,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
@@ -47,6 +51,7 @@ public class OrderFormController {
     private List<EmployeeDto> allEmployees;
     private EmployeeDto employeeDto;
     private Boolean positionStatus;
+    private OrderDetailBo orderDetailBo=new OrderDetailBoImpl();
     public void initialize() throws SQLException, ClassNotFoundException {
         Long userId = UserInstanceController.getInstance().getUserId();
         allEmployees = employeeBo.getAll();
@@ -92,8 +97,8 @@ public class OrderFormController {
                 JFXButton changeStatusBtn = new JFXButton("Change Status");
                 JFXButton viewBtn = new JFXButton("View");
                 OrdersTm c = new OrdersTm(
-                        dto.getCustomerId(),
                         dto.getOrderId(),
+                        dto.getCustomerId(),
                         dto.getEmployeeId(),
                         dto.getOrderStaus(),
                         dto.getTotal(),
@@ -104,14 +109,8 @@ public class OrderFormController {
 
                 deleteBtn.setStyle("-fx-background-color: white");
                 deleteBtn.setOnAction(actionEvent -> {
-                    try {
-                        System.out.println("delete");
-                        orderBo.delete(c.getOrderId());
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
+                    deleteOrder(dto,c);
+
                 });
                 changeStatusBtn.setStyle("-fx-background-color: white");
                 changeStatusBtn.setOnAction(actionEvent -> {
@@ -159,6 +158,36 @@ public class OrderFormController {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void deleteOrder(OrderDto dto,OrdersTm c) {
+        try {
+            List<OrderDetailDto> list=dto.getList();
+            for (OrderDetailDto detailDto:list) {
+                orderDetailBo.delete(detailDto.getOrderDetailId());
+            }
+            boolean isDeleted=orderBo.delete(c.getOrderId());
+            if(isDeleted){
+
+                new Alert(Alert.AlertType.INFORMATION,"Is deleted").show();
+                Stage stage = (Stage) pane.getScene().getWindow();
+                try {
+                    stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/OrderForm.fxml"))));
+                    stage.setResizable(true);
+                    stage.setTitle("Orders Form");
+                    stage.show();
+                } catch (Exception e) {
+
+                }
+            }else{
+                new Alert(Alert.AlertType.ERROR,"Something went wrong").show();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

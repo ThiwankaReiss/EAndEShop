@@ -24,7 +24,7 @@ public class OrderBoImpl implements OrderBo {
 
     @Override
     public boolean delete(Long value) throws SQLException, ClassNotFoundException {
-        return false;
+        return orderDao.delete(value);
     }
 
     @Override
