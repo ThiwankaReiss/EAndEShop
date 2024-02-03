@@ -43,6 +43,14 @@ public class OrderByIdReportFormController {
  
 
     public MenuButton orderIdMenuBtn;
+    public Label customerIdLbl;
+    public Label orderIdLbl;
+    public Label employeeIddLbl;
+    public Label itemIdLbl;
+    public Label lblTotal;
+    public Label orderStatusLbl;
+    public Label orderDate;
+    public Label feeLbl;
 
     private EmployeeBo employeeBo = new EmployeeBoImpl();
     private List<EmployeeDto> allEmployees;
@@ -95,7 +103,14 @@ public class OrderByIdReportFormController {
     }
 
     private void setData() {
-
+        lblTotal.setText("Total : "+orderDto.getTotal());
+        feeLbl.setText("Fee : "+orderDto.getFee());
+        orderStatusLbl.setText("Status : "+orderDto.getOrderStaus());
+        orderDate.setText("Date : "+orderDto.getDate());
+        customerIdLbl.setText("Customer Id : "+orderDto.getCustomerId());
+        orderIdLbl.setText("Order Id : "+orderDto.getOrderId());
+        employeeIddLbl.setText("Employee Id : "+orderDto.getEmployeeId());
+        itemIdLbl.setText("Item Id : "+orderDto.getItemId());
     }
 
 
