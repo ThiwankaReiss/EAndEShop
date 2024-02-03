@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class OrderReportFormController {
+public class OrdersByCustomerReportFormController {
     public GridPane pane;
     public MenuItem salesReportBtn;
     private EmployeeBo employeeBo = new EmployeeBoImpl();
@@ -141,42 +141,6 @@ public class OrderReportFormController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void orderByIdOnAction(ActionEvent actionEvent) {
-        Stage stage = (Stage) pane.getScene().getWindow();
-        try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/OrderByIdReportForm.fxml"))));
-            stage.setResizable(true);
-            stage.setTitle("Order By Id Form");
-            stage.show();
-        } catch (Exception e) {
-
-        }
-    }
-
-    public void orderByCustomerOnAction(ActionEvent actionEvent) {
-        Stage stage = (Stage) pane.getScene().getWindow();
-        try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/OrdersByCustomerReportForm.fxml"))));
-            stage.setResizable(true);
-            stage.setTitle("Orders By Customer Form");
-            stage.show();
-        } catch (Exception e) {
-
-        }
-    }
-
-    public void allOrdersOnAction(ActionEvent actionEvent) {
-        Stage stage = (Stage) pane.getScene().getWindow();
-        try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/OrderForm.fxml"))));
-            stage.setResizable(true);
-            stage.setTitle("Orders Form");
-            stage.show();
-        } catch (Exception e) {
-
         }
     }
 }

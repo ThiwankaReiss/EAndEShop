@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import db.DBConnection;
 import dto.CustomerDto;
 import dto.EmployeeDto;
 import dto.OrderDetailDto;
@@ -28,6 +29,10 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -319,5 +324,12 @@ public class OrderFormController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void printOnAction(ActionEvent actionEvent) throws JRException {
+        JasperDesign design= JRXmlLoader.load("src/main/resources/reports/AllOrderReportE&Eshop.jrxml");
+        JasperReport jasperReport= JasperCompileManager.compileReport(design);
+        JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport,null, DBConnection.getInstance().getConnection());
+        JasperViewer.viewReport(jasperPrint,false);
     }
 }
