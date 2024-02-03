@@ -13,6 +13,8 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.mysql.cj.x.protobuf.MysqlxExpr;
+import db.DBConnection;
 import dto.*;
 import dto.tm.OrderDetailReoprtTm;
 import dto.tm.OrderDetailsTm;
@@ -26,10 +28,20 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class OrderByIdReportFormController {
@@ -274,7 +286,46 @@ public class OrderByIdReportFormController {
 
 
 
-    public void printOnAction(ActionEvent actionEvent) {
+    public void printOnAction(ActionEvent actionEvent) throws JRException, SQLException, ClassNotFoundException {
+        if(orderDto !=null){
+            String s="";
+            List<PartDto> partDtos=partBo.getAll();
+            List<OrderDetailDto> dto=orderDto.getList();
+            for (OrderDetailDto d:dto ) {
+                for (PartDto p:partDtos) {
+                    if(p.getPartId().equals(d.getPartId())){
+                        s+=p.getPartId()+" - "+p.getName()+"\n";
+                    }
+                }
+            }
+
+            JasperDesign design= JRXmlLoader.load("src/main/resources/reports/OderByIdE&EShop.jrxml");
+
+            JRDesignQuery query=new JRDesignQuery();
+            query.setText("SELECT * FROM orderDetail WHERE orderId='"+orderDto.getOrderId()+"'");
+            design.setQuery(query);
+
+            Map<String, Object> parameters=new HashMap<String, Object>();
+            parameters.put("OrderIdText",orderDto.getOrderId()+"");
+            parameters.put("CustomerIdText",orderDto.getCustomerId()+"");
+            parameters.put("ItemIdText",orderDto.getItemId()+"");
+            parameters.put("EmployeeIdText",orderDto.getEmployeeId()+"");
+            parameters.put("TotalText",orderDto.getTotal()+"");
+            parameters.put("OrderStatusText",orderDto.getOrderStaus()+"");
+            parameters.put("FeeText",orderDto.getFee()+"");
+            parameters.put("DateText",orderDto.getDate()+"");
+
+            parameters.put("PartNames",s);
+
+
+
+
+            JasperReport jasperReport= JasperCompileManager.compileReport(design);
+            JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport,parameters, DBConnection.getInstance().getConnection());
+            JasperViewer.viewReport(jasperPrint,false);
+        }else{
+            new Alert(Alert.AlertType.ERROR,"Select An Order").show();
+        }
 
     }
 }
