@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import db.DBConnection;
 import dto.*;
 import dto.tm.OrderByCustomerReportTm;
 import dto.tm.OrderDetailReoprtTm;
@@ -23,13 +24,19 @@ import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class OrdersByCustomerReportFormController {
@@ -45,6 +52,7 @@ public class OrdersByCustomerReportFormController {
     public TreeTableColumn colItemId;
     public TreeTableColumn colFee;
     public TreeTableColumn colDate;
+    public Label custIdLbl;
 
 
     private EmployeeBo employeeBo = new EmployeeBoImpl();
@@ -86,6 +94,7 @@ public class OrdersByCustomerReportFormController {
             odr.setOnAction(e->{
                 tmList.clear();
                 customerDto = dto;
+                custIdLbl.setText("Customer Id : "+customerDto.getCustomerId());
                 loadTable();
             });
         }
@@ -95,6 +104,7 @@ public class OrdersByCustomerReportFormController {
             odr.setOnAction(e->{
                 tmList.clear();
                 customerDto = dto;
+                custIdLbl.setText("Customer Id : "+customerDto.getCustomerId());
                 loadTable();
             });
         }
@@ -262,8 +272,25 @@ public class OrdersByCustomerReportFormController {
         }
     }
 
-    public void printOnAction(ActionEvent actionEvent) {
+    public void printOnAction(ActionEvent actionEvent) throws JRException {
+        if(customerDto !=null){
 
+            JasperDesign design= JRXmlLoader.load("src/main/resources/reports/OrderByCustomerE&EShop.jrxml");
+
+            JRDesignQuery query=new JRDesignQuery();
+            query.setText("SELECT * FROM orders WHERE customerId='"+customerDto.getCustomerId()+"'");
+            design.setQuery(query);
+
+            Map<String, Object> parameters=new HashMap<String, Object>();
+
+            parameters.put("CustomeIdText",customerDto.getCustomerId()+"");
+
+            JasperReport jasperReport= JasperCompileManager.compileReport(design);
+            JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport,parameters, DBConnection.getInstance().getConnection());
+            JasperViewer.viewReport(jasperPrint,false);
+        }else{
+            new Alert(Alert.AlertType.ERROR,"Select A Customer").show();
+        }
     }
 
 }
