@@ -4,6 +4,7 @@ import bo.custom.EmployeeBo;
 import bo.custom.OrderBo;
 import bo.custom.impl.EmployeeBoImpl;
 import bo.custom.impl.OrderBoImpl;
+import com.jfoenix.controls.JFXTextField;
 import dto.EmployeeDto;
 import dto.OrderDto;
 import dto.PointDto;
@@ -12,21 +13,28 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SalesReportFormController {
     public GridPane pane;
     public MenuItem salesReportBtn;
     public LineChart salesReportLineChart;
+    public JFXTextField startDateTextField;
+    public JFXTextField endDateTextField;
     private EmployeeBo employeeBo = new EmployeeBoImpl();
     private List<EmployeeDto> allEmployees;
     private EmployeeDto employeeDto;
@@ -44,20 +52,9 @@ public class SalesReportFormController {
         if(!positionStatus){
             salesReportBtn.setVisible(false);
         }
-
-
-
     }
 
-    public List<PointDto> generateReportArray(String interval,String startDate,String endDate) throws SQLException, ClassNotFoundException {
-        double [] reportArray=new double[0];
-        switch (interval){
-            case "daily": return dailyArray(startDate,endDate);
-            case "monthly":return monthlyArray(startDate,endDate);
-            case "yearly":return yearlyArray(startDate,endDate);
-        }
-        return null;
-    }
+
 
     private List<PointDto> yearlyArray(String startDate,String endDate) throws SQLException, ClassNotFoundException {
 
@@ -106,8 +103,76 @@ public class SalesReportFormController {
         return pointDtos;
     }
 
-    private List<PointDto> monthlyArray(String startDate,String endDate) {
-        return null;
+
+
+    private double [] monthlyArray(String startDate,String endDate) throws SQLException, ClassNotFoundException {
+        List<OrderDto> dtoList=orderBo.getAll();
+
+
+        double [] monthlySales=new double[12];
+
+        for (OrderDto dto:dtoList) {
+            if(isDateWithinRange(dto.getDate(),startDate,endDate)){
+                switch (getMonthString(dto.getDate()).toLowerCase()) {
+
+                    case "january":
+                        monthlySales[0]+=dto.getTotal();
+                        break;
+                    case "february":
+                        monthlySales[1]+=dto.getTotal();
+                        break;
+                    case "march":
+                        monthlySales[2]+=dto.getTotal();
+                        break;
+                    case "april":
+                        monthlySales[3]+=dto.getTotal();
+                        break;
+                    case "may":
+                        monthlySales[4]+=dto.getTotal();;
+                        break;
+                    case "june":
+                        monthlySales[5]+=dto.getTotal();;
+                        break;
+                    case "july":
+                        monthlySales[6]+=dto.getTotal();;
+                        break;
+                    case "august":
+                        monthlySales[7]+=dto.getTotal();;
+                        break;
+                    case "september":
+                        monthlySales[8]+=dto.getTotal();;
+                        break;
+                    case "october":
+                        monthlySales[9]+=dto.getTotal();;
+                        break;
+                    case "november":
+                        monthlySales[10]+=dto.getTotal();;
+                        break;
+                    case "december":
+                        monthlySales[11]+=dto.getTotal();;
+                        break;
+                    default:
+                        System.out.println("Invalid month");
+                }
+            }
+
+        }
+        return monthlySales;
+    }
+    public static boolean isDateWithinRange(String dateToCheck, String startDate, String endDate) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+            Date date = sdf.parse(dateToCheck);
+            Date start = sdf.parse(startDate);
+            Date end = sdf.parse(endDate);
+
+            return !(date.before(start) || date.after(end));
+        } catch (ParseException e) {
+            // Handle parsing exception if needed
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static String[] generateDateArray(String startDate, String endDate) {
@@ -126,9 +191,7 @@ public class SalesReportFormController {
         System.out.println("Exit date generation");
         return dateList.toArray(new String[0]);
     }
-    public void addDataPoint(String label, Number value) {
 
-    }
 
     public void orderReportBtnOnAction(ActionEvent actionEvent) {
         Stage stage = (Stage) pane.getScene().getWindow();
@@ -239,18 +302,38 @@ public class SalesReportFormController {
     }
 
     public void dailyMenuItmOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
-        List<PointDto> d= dailyArray("2024-01-20","2024-02-04");
-        String[] dates=generateDateArray("2024-01-20","2024-02-04");
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        int i=0;
-        for (PointDto dt:d) {
-            series.getData().add(new XYChart.Data<>(dates[i], dt.getY()));
-            i++;
+        salesReportLineChart.getData().clear();
+        if(isDateInputCorrect()){
+            List<PointDto> d= dailyArray(startDateTextField.getText(),endDateTextField.getText());
+            String[] dates=generateDateArray(startDateTextField.getText(),endDateTextField.getText());
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            int i=0;
+            for (PointDto dt:d) {
+                series.getData().add(new XYChart.Data<>(dates[i], dt.getY()));
+                i++;
+            }
+
+            salesReportLineChart.getData().add(series);
         }
-        salesReportLineChart.getData().add(series);
+
     }
 
-    public void monthlyMenuItemOnAction(ActionEvent actionEvent) {
+
+
+    public void monthlyMenuItemOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        salesReportLineChart.getData().clear();
+        if(isDateInputCorrect()){
+            double [] monthlySalesArray= monthlyArray(startDateTextField.getText(),endDateTextField.getText());
+            String[] months={"January","February","March","April","May","June","July","August","September","October","November","December"};
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            int i=0;
+            for (double monthlySales:monthlySalesArray) {
+                series.getData().add(new XYChart.Data<>(months[i], monthlySales));
+                i++;
+            }
+
+            salesReportLineChart.getData().add(series);
+        }
     }
 
     public void yearlyMenuItemOnAction(ActionEvent actionEvent) {
@@ -259,4 +342,72 @@ public class SalesReportFormController {
     public void printBtnOnAction(ActionEvent actionEvent) {
 
     }
+
+    public boolean isDateInputCorrect(){
+        if(!isTextFieldNotNull(startDateTextField)){
+            new Alert(Alert.AlertType.ERROR,"Enter Start Date").show();
+        }else if(!isTextFieldNotNull(endDateTextField)){
+            new Alert(Alert.AlertType.ERROR,"Enter End Date").show();
+        }else if(!isValidDate(startDateTextField.getText())){
+            new Alert(Alert.AlertType.ERROR,"Enter Valid Start Date").show();
+        }else if(!isValidDate(endDateTextField.getText())){
+            new Alert(Alert.AlertType.ERROR,"Enter Valid End Date").show();
+        }else if(!isValidDateRange(startDateTextField.getText(),endDateTextField.getText())){
+            new Alert(Alert.AlertType.ERROR,"Start date must be before end date").show();
+        }else{
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isTextFieldNotNull(JFXTextField textField){
+        if(textField.getText().equals(null)||textField.getText().equals("")){
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isValidDate(String dateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false);
+
+        try {
+            Date date = sdf.parse(dateStr);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
+    }
+
+    public static boolean isValidDateRange(String startDateStr, String endDateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false);
+
+        try {
+            Date startDate = sdf.parse(startDateStr);
+            Date endDate = sdf.parse(endDateStr);
+
+            // Check if end date is after start date
+            if (endDate.after(startDate)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ParseException e) {
+            return false; // If parsing fails, return false
+        }
+    }
+
+    public static String getMonthString(String dateString) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = dateFormat.parse(dateString);
+            DateFormat monthFormat = new SimpleDateFormat("MMMM");
+            return monthFormat.format(date).toLowerCase(); // Convert to lowercase as per your request
+        } catch (ParseException e) {
+            e.printStackTrace(); // Handle the ParseException as needed
+            return "Invalid Date";
+        }
+    }
+
 }

@@ -153,8 +153,8 @@
                   <MenuItem mnemonicParsing="false" onAction="#yearlyMenuItemOnAction" text="Yearly" />
               </items>
             </MenuButton>
-            <JFXTextField fx:id="startDateTextField" focusColor="BLACK" labelFloat="true" onKeyReleased="#feeKeyReleased" prefHeight="25.0" prefWidth="163.0" promptText="Start Date (yyyyy-mm-dd)" style="-fx-prompt-text-fill: black; -fx-text-fill: black;" unFocusColor="BLACK" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <JFXTextField fx:id="endDateTextField" focusColor="BLACK" labelFloat="true" onKeyReleased="#feeKeyReleased" prefHeight="25.0" prefWidth="163.0" promptText="End Date (yyyyy-mm-dd)" style="-fx-prompt-text-fill: black; -fx-text-fill: black;" unFocusColor="BLACK" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <JFXTextField fx:id="startDateTextField" focusColor="BLACK" labelFloat="true" prefHeight="25.0" prefWidth="163.0" promptText="Start Date (yyyyy-mm-dd)" style="-fx-prompt-text-fill: black; -fx-text-fill: black;" unFocusColor="BLACK" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <JFXTextField fx:id="endDateTextField" focusColor="BLACK" labelFloat="true" prefHeight="25.0" prefWidth="163.0" promptText="End Date (yyyyy-mm-dd)" style="-fx-prompt-text-fill: black; -fx-text-fill: black;" unFocusColor="BLACK" GridPane.columnIndex="4" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <GridPane GridPane.rowIndex="3">
