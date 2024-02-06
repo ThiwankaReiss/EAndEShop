@@ -412,13 +412,9 @@ public class SalesReportPieChartController {
     }
 
     public void printBtnOnAction(ActionEvent actionEvent) throws JRException, IOException {
-//        double[] d = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-//        String [] s={"a","b","c","d","e","f","g","h","i"};
-//        for (int j = 0; j < d.length; j++) {
-//            xyData.add(new SalesCordinateDto(d[j], s[j]));
-//        }
 
-        JasperDesign design= JRXmlLoader.load("src/main/resources/reports/LineChartEandEShop.jrxml");
+
+        JasperDesign design= JRXmlLoader.load("src/main/resources/reports/EandEShopPieChart.jrxml");
 
 
         Map<String, Object> parameters = new HashMap<>();

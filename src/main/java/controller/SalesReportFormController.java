@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
@@ -343,6 +344,7 @@ public class SalesReportFormController {
             List<PointDto> d= dailyArray(startDateTextField.getText(),endDateTextField.getText());
             String[] dates=generateDateArray(startDateTextField.getText(),endDateTextField.getText());
             XYChart.Series<String, Number> series = new XYChart.Series<>();
+
             int i=0;
             for (PointDto dt:d) {
                 series.getData().add(new XYChart.Data<>(dates[i], dt.getY()));
