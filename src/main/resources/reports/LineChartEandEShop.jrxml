@@ -10,6 +10,7 @@
 		<field name="xValue" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="Chart_Dataset" class="java.util.List"/>
+	<parameter name="ReportName" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -19,19 +20,35 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="180" y="0" width="203" height="30" uuid="214f7c56-8220-4896-b536-1ff6830dbe16"/>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[E and E Shop]]></text>
+			</staticText>
+		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="48" splitType="Stretch">
+			<textField>
+				<reportElement x="180" y="10" width="203" height="30" uuid="538c40f7-1568-4672-93b3-c4d957a389e8"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ReportName}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="38" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="243" splitType="Stretch">
+		<band height="223" splitType="Stretch">
 			<lineChart>
 				<chart evaluationTime="Report">
-					<reportElement x="130" y="10" width="260" height="200" uuid="85299b2a-aec0-4fba-a559-466b74323326"/>
+					<reportElement x="0" y="10" width="550" height="200" uuid="85299b2a-aec0-4fba-a559-466b74323326"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -61,10 +78,23 @@
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement x="231" y="10" width="100" height="30" uuid="764bbeb0-66b4-4f11-b9a7-4b9046222dba"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Thank You]]></text>
+			</staticText>
+		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="450" y="0" width="100" height="30" uuid="d3495cc2-7137-4d11-bb77-93a1d0d5495f"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>

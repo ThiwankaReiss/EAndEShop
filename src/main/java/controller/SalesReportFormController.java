@@ -47,6 +47,8 @@ public class SalesReportFormController {
     private OrderBo orderBo=new OrderBoImpl();
     private List<Integer> yearsArray= new ArrayList<>();
     private List<Double> yearlySales= new ArrayList<>();
+    private  List<SalesCordinateDto> xyData = new ArrayList<>();
+    private String topic;
     public void initialize() throws SQLException, ClassNotFoundException {
         Long userId = UserInstanceController.getInstance().getUserId();
         allEmployees = employeeBo.getAll();
@@ -334,7 +336,9 @@ public class SalesReportFormController {
     }
 
     public void dailyMenuItmOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        topic="Daily Sales Report";
         salesReportLineChart.getData().clear();
+        xyData.clear();
         if(isDateInputCorrect()){
             List<PointDto> d= dailyArray(startDateTextField.getText(),endDateTextField.getText());
             String[] dates=generateDateArray(startDateTextField.getText(),endDateTextField.getText());
@@ -342,6 +346,7 @@ public class SalesReportFormController {
             int i=0;
             for (PointDto dt:d) {
                 series.getData().add(new XYChart.Data<>(dates[i], dt.getY()));
+                xyData.add(new SalesCordinateDto(dt.getY(),dates[i]));
                 i++;
             }
 
@@ -353,7 +358,9 @@ public class SalesReportFormController {
 
 
     public void monthlyMenuItemOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        topic="Monthly Sales Report";
         salesReportLineChart.getData().clear();
+        xyData.clear();
         if(isDateInputCorrect()){
             double [] monthlySalesArray= monthlyArray(startDateTextField.getText(),endDateTextField.getText());
             String[] months={"January","February","March","April","May","June","July","August","September","October","November","December"};
@@ -361,6 +368,7 @@ public class SalesReportFormController {
             int i=0;
             for (double monthlySales:monthlySalesArray) {
                 series.getData().add(new XYChart.Data<>(months[i], monthlySales));
+                xyData.add(new SalesCordinateDto(monthlySales,months[i]));
                 i++;
             }
 
@@ -369,7 +377,9 @@ public class SalesReportFormController {
     }
 
     public void yearlyMenuItemOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        topic="Yearly Sales Report";
         salesReportLineChart.getData().clear();
+        xyData.clear();
         if(isDateInputCorrect()){
             yearlyArray(startDateTextField.getText(),endDateTextField.getText());
 
@@ -377,6 +387,7 @@ public class SalesReportFormController {
             int i=0;
             for (double yearSale:yearlySales) {
                 series.getData().add(new XYChart.Data<>(yearsArray.get(i)+"", yearSale));
+                xyData.add(new SalesCordinateDto(yearSale,yearsArray.get(i)+""));
                 i++;
             }
 
@@ -385,19 +396,18 @@ public class SalesReportFormController {
     }
 
     public void printBtnOnAction(ActionEvent actionEvent) throws JRException, IOException {
-        double[] d = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        String [] s={"a","b","c","d","e","f","g","h","i"};
-        List<SalesCordinateDto> xyData = new ArrayList<>();
-
-        for (int j = 0; j < d.length; j++) {
-            xyData.add(new SalesCordinateDto(d[j], s[j]));
-        }
+//        double[] d = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+//        String [] s={"a","b","c","d","e","f","g","h","i"};
+//        for (int j = 0; j < d.length; j++) {
+//            xyData.add(new SalesCordinateDto(d[j], s[j]));
+//        }
 
         JasperDesign design= JRXmlLoader.load("src/main/resources/reports/LineChartEandEShop.jrxml");
 
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("Chart_Dataset", xyData);
+        parameters.put("ReportName", topic);
         JasperReport jasperReport= JasperCompileManager.compileReport(design);
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
         JasperViewer.viewReport(jasperPrint,false);

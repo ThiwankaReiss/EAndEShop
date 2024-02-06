@@ -53,7 +53,7 @@ public class LoginFormController {
 
     private EmployeeDto otpDto;
     private static String otp;
-    private int durationSeconds = 30;
+    private int durationSeconds = 60;
     private int currentSecond = durationSeconds;
     private boolean screenChanged=false;
 
