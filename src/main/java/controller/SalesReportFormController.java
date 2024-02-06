@@ -5,9 +5,11 @@ import bo.custom.OrderBo;
 import bo.custom.impl.EmployeeBoImpl;
 import bo.custom.impl.OrderBoImpl;
 import com.jfoenix.controls.JFXTextField;
+import db.DBConnection;
 import dto.EmployeeDto;
 import dto.OrderDto;
 import dto.PointDto;
+import dto.SalesCordinateDto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,17 +19,20 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class SalesReportFormController {
     public GridPane pane;
@@ -40,6 +45,8 @@ public class SalesReportFormController {
     private EmployeeDto employeeDto;
     private Boolean positionStatus;
     private OrderBo orderBo=new OrderBoImpl();
+    private List<Integer> yearsArray= new ArrayList<>();
+    private List<Double> yearlySales= new ArrayList<>();
     public void initialize() throws SQLException, ClassNotFoundException {
         Long userId = UserInstanceController.getInstance().getUserId();
         allEmployees = employeeBo.getAll();
@@ -55,10 +62,23 @@ public class SalesReportFormController {
     }
 
 
+    private void yearlyArray(String startDate,String endDate) throws SQLException, ClassNotFoundException {
+        int currentYear=0;
+        List<OrderDto> dtoList=orderBo.getAll();
+        int i=0;
+        for (OrderDto dto:dtoList) {
+            if(isDateWithinRange(dto.getDate(),startDate,endDate)){
+                if(getYearFromStringDate(dto.getDate())!=currentYear){
+                    currentYear=getYearFromStringDate(dto.getDate());
+                    yearsArray.add(currentYear);
+                    yearlySales.add(dto.getTotal());
+                    i++;
+                }else {
+                    yearlySales.set(i-1,yearlySales.get(i-1)+ dto.getTotal());
+                }
+            }
+        }
 
-    private List<PointDto> yearlyArray(String startDate,String endDate) throws SQLException, ClassNotFoundException {
-
-        return null;
     }
 
     private List<PointDto> dailyArray(String startDate,String endDate) throws SQLException, ClassNotFoundException {
@@ -128,28 +148,28 @@ public class SalesReportFormController {
                         monthlySales[3]+=dto.getTotal();
                         break;
                     case "may":
-                        monthlySales[4]+=dto.getTotal();;
+                        monthlySales[4]+=dto.getTotal();
                         break;
                     case "june":
-                        monthlySales[5]+=dto.getTotal();;
+                        monthlySales[5]+=dto.getTotal();
                         break;
                     case "july":
-                        monthlySales[6]+=dto.getTotal();;
+                        monthlySales[6]+=dto.getTotal();
                         break;
                     case "august":
-                        monthlySales[7]+=dto.getTotal();;
+                        monthlySales[7]+=dto.getTotal();
                         break;
                     case "september":
-                        monthlySales[8]+=dto.getTotal();;
+                        monthlySales[8]+=dto.getTotal();
                         break;
                     case "october":
-                        monthlySales[9]+=dto.getTotal();;
+                        monthlySales[9]+=dto.getTotal();
                         break;
                     case "november":
-                        monthlySales[10]+=dto.getTotal();;
+                        monthlySales[10]+=dto.getTotal();
                         break;
                     case "december":
-                        monthlySales[11]+=dto.getTotal();;
+                        monthlySales[11]+=dto.getTotal();
                         break;
                     default:
                         System.out.println("Invalid month");
@@ -176,7 +196,7 @@ public class SalesReportFormController {
     }
 
     public static String[] generateDateArray(String startDate, String endDate) {
-        System.out.println("Enterd date generation");
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         LocalDate start = LocalDate.parse(startDate, formatter);
@@ -191,7 +211,19 @@ public class SalesReportFormController {
         System.out.println("Exit date generation");
         return dateList.toArray(new String[0]);
     }
+    public static int getYearFromStringDate(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+        try {
+            Date date = dateFormat.parse(dateString);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return calendar.get(Calendar.YEAR);
+        } catch (ParseException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+            return -1; // Return a default value or handle the error case
+        }
+    }
 
     public void orderReportBtnOnAction(ActionEvent actionEvent) {
         Stage stage = (Stage) pane.getScene().getWindow();
@@ -336,10 +368,42 @@ public class SalesReportFormController {
         }
     }
 
-    public void yearlyMenuItemOnAction(ActionEvent actionEvent) {
+    public void yearlyMenuItemOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
+        salesReportLineChart.getData().clear();
+        if(isDateInputCorrect()){
+            yearlyArray(startDateTextField.getText(),endDateTextField.getText());
+
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            int i=0;
+            for (double yearSale:yearlySales) {
+                series.getData().add(new XYChart.Data<>(yearsArray.get(i)+"", yearSale));
+                i++;
+            }
+
+            salesReportLineChart.getData().add(series);
+        }
     }
 
-    public void printBtnOnAction(ActionEvent actionEvent) {
+    public void printBtnOnAction(ActionEvent actionEvent) throws JRException, IOException {
+        double[] d = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        String [] s={"a","b","c","d","e","f","g","h","i"};
+        List<SalesCordinateDto> xyData = new ArrayList<>();
+
+        for (int j = 0; j < d.length; j++) {
+            xyData.add(new SalesCordinateDto(d[j], s[j]));
+        }
+
+        JasperDesign design= JRXmlLoader.load("src/main/resources/reports/LineChartEandEShop.jrxml");
+
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("Chart_Dataset", xyData);
+        JasperReport jasperReport= JasperCompileManager.compileReport(design);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+        JasperViewer.viewReport(jasperPrint,false);
+//        OutputStream output = new FileOutputStream(new File("src/main/resources/reports/demo_report.pdf"));
+//        JasperExportManager.exportReportToPdfStream(jasperPrint, output);
+//        output.close();
 
     }
 
