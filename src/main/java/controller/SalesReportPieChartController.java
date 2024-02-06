@@ -5,7 +5,6 @@ import bo.custom.OrderBo;
 import bo.custom.impl.EmployeeBoImpl;
 import bo.custom.impl.OrderBoImpl;
 import com.jfoenix.controls.JFXTextField;
-import db.DBConnection;
 import dto.EmployeeDto;
 import dto.OrderDto;
 import dto.PointDto;
@@ -14,18 +13,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 
-import java.io.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -34,12 +35,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class SalesReportFormController {
+public class SalesReportPieChartController {
     public GridPane pane;
     public MenuItem salesReportBtn;
-    public LineChart salesReportLineChart;
     public JFXTextField startDateTextField;
     public JFXTextField endDateTextField;
+    public PieChart pieChart;
     private EmployeeBo employeeBo = new EmployeeBoImpl();
     private List<EmployeeDto> allEmployees;
     private EmployeeDto employeeDto;
@@ -61,6 +62,18 @@ public class SalesReportFormController {
         if(!positionStatus){
             salesReportBtn.setVisible(false);
         }
+
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("Category 1", 30);
+        dataset.setValue("Category 2", 20);
+        dataset.setValue("Category 3", 50);
+
+//
+//        pieChart.getData().add(new PieChart.Data("Category 1", 30));
+//        pieChart.getData().add(new PieChart.Data("Category 2", 40));
+//        pieChart.getData().add(new PieChart.Data("Category 3", 20));
+
+
     }
 
 
@@ -83,7 +96,7 @@ public class SalesReportFormController {
 
     }
 
-    private List<PointDto> dailyArray(String startDate,String endDate) throws SQLException, ClassNotFoundException {
+    private List<PointDto> dailyArray(String startDate, String endDate) throws SQLException, ClassNotFoundException {
         List<PointDto> pointDtos=new ArrayList<>();
         String[] dates=generateDateArray(startDate,endDate);
         List<OrderDto> dtoList=orderBo.getAll();
@@ -337,20 +350,21 @@ public class SalesReportFormController {
 
     public void dailyMenuItmOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         topic="Daily Sales Report";
-        salesReportLineChart.getData().clear();
+        pieChart.getData().clear();
         xyData.clear();
         if(isDateInputCorrect()){
             List<PointDto> d= dailyArray(startDateTextField.getText(),endDateTextField.getText());
             String[] dates=generateDateArray(startDateTextField.getText(),endDateTextField.getText());
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
+
             int i=0;
             for (PointDto dt:d) {
-                series.getData().add(new XYChart.Data<>(dates[i], dt.getY()));
+
                 xyData.add(new SalesCordinateDto(dt.getY(),dates[i]));
+                pieChart.getData().add(new PieChart.Data(dates[i], dt.getY()));
                 i++;
             }
 
-            salesReportLineChart.getData().add(series);
+//            salesReportLineChart.getData().add(series);
         }
 
     }
@@ -359,39 +373,41 @@ public class SalesReportFormController {
 
     public void monthlyMenuItemOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         topic="Monthly Sales Report";
-        salesReportLineChart.getData().clear();
+        pieChart.getData().clear();
         xyData.clear();
         if(isDateInputCorrect()){
             double [] monthlySalesArray= monthlyArray(startDateTextField.getText(),endDateTextField.getText());
             String[] months={"January","February","March","April","May","June","July","August","September","October","November","December"};
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
+//            XYChart.Series<String, Number> series = new XYChart.Series<>();
             int i=0;
             for (double monthlySales:monthlySalesArray) {
-                series.getData().add(new XYChart.Data<>(months[i], monthlySales));
+//                series.getData().add(new XYChart.Data<>(months[i], monthlySales));
+                pieChart.getData().add(new PieChart.Data(months[i], monthlySales));
                 xyData.add(new SalesCordinateDto(monthlySales,months[i]));
                 i++;
             }
-
-            salesReportLineChart.getData().add(series);
+//
+//            salesReportLineChart.getData().add(series);
         }
     }
 
     public void yearlyMenuItemOnAction(ActionEvent actionEvent) throws SQLException, ClassNotFoundException {
         topic="Yearly Sales Report";
-        salesReportLineChart.getData().clear();
+        pieChart.getData().clear();
         xyData.clear();
         if(isDateInputCorrect()){
             yearlyArray(startDateTextField.getText(),endDateTextField.getText());
 
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
+//            XYChart.Series<String, Number> series = new XYChart.Series<>();
             int i=0;
             for (double yearSale:yearlySales) {
-                series.getData().add(new XYChart.Data<>(yearsArray.get(i)+"", yearSale));
+//                series.getData().add(new XYChart.Data<>(yearsArray.get(i)+"", yearSale));
                 xyData.add(new SalesCordinateDto(yearSale,yearsArray.get(i)+""));
+                pieChart.getData().add(new PieChart.Data(yearsArray.get(i)+"", yearSale));
                 i++;
             }
 
-            salesReportLineChart.getData().add(series);
+//            salesReportLineChart.getData().add(series);
         }
     }
 
@@ -481,18 +497,6 @@ public class SalesReportFormController {
         } catch (ParseException e) {
             e.printStackTrace(); // Handle the ParseException as needed
             return "Invalid Date";
-        }
-    }
-
-    public void pieChartBtnOnAction(ActionEvent actionEvent) {
-        Stage stage = (Stage) pane.getScene().getWindow();
-        try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/SalesReportPieChart.fxml"))));
-            stage.setResizable(true);
-            stage.setTitle("Parts Form");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
