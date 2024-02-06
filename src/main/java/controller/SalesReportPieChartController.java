@@ -495,4 +495,16 @@ public class SalesReportPieChartController {
             return "Invalid Date";
         }
     }
+
+    public void lineChartBtnOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) pane.getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/SalesReportForm.fxml"))));
+            stage.setResizable(true);
+            stage.setTitle("Customers Report Form");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
