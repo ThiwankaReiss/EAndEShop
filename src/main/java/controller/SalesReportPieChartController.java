@@ -12,9 +12,7 @@ import dto.SalesCordinateDto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
@@ -23,7 +21,6 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 import java.io.IOException;
@@ -412,20 +409,23 @@ public class SalesReportPieChartController {
     }
 
     public void printBtnOnAction(ActionEvent actionEvent) throws JRException, IOException {
+        if(isDateInputCorrect()){
+            JasperDesign design= JRXmlLoader.load("src/main/resources/reports/EandEShopPieChart.jrxml");
 
 
-        JasperDesign design= JRXmlLoader.load("src/main/resources/reports/EandEShopPieChart.jrxml");
-
-
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("Chart_Dataset", xyData);
-        parameters.put("ReportName", topic);
-        JasperReport jasperReport= JasperCompileManager.compileReport(design);
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
-        JasperViewer.viewReport(jasperPrint,false);
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("Chart_Dataset", xyData);
+            parameters.put("ReportName", topic);
+            JasperReport jasperReport= JasperCompileManager.compileReport(design);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JREmptyDataSource());
+            JasperViewer.viewReport(jasperPrint,false);
 //        OutputStream output = new FileOutputStream(new File("src/main/resources/reports/demo_report.pdf"));
 //        JasperExportManager.exportReportToPdfStream(jasperPrint, output);
 //        output.close();
+
+        }
+
+
 
     }
 

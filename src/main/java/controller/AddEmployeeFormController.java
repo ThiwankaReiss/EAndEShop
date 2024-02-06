@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import dto.CustomerDto;
 import dto.EmployeeDto;
 import dto.tm.EmployeeTm;
 import javafx.animation.Animation;

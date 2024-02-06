@@ -2,7 +2,6 @@ package bo.custom.impl;
 
 import bo.custom.OrderDetailBo;
 import dao.DaoFactory;
-import dao.custom.OrderDao;
 import dao.custom.OrderDetailDao;
 import dao.util.DaoType;
 import dto.OrderDetailDto;

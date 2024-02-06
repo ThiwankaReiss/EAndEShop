@@ -1,8 +1,6 @@
 package dao;
 
-import javax.persistence.PersistenceException;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public interface CrudDao<T> extends SuperDao {

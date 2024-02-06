@@ -1,7 +1,5 @@
 package controller;
 
-import lombok.Setter;
-
 import java.sql.SQLException;
 
 public class UserInstanceController {

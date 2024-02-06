@@ -4,7 +4,6 @@ import dao.custom.CustomerDao;
 import dao.util.HibernateUtil;
 import db.DBConnection;
 import entity.Customer;
-import entity.Employee;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

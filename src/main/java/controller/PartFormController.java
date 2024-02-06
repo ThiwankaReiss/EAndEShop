@@ -1,10 +1,8 @@
 package controller;
 
 import bo.custom.EmployeeBo;
-import bo.custom.ItemBo;
 import bo.custom.PartBo;
 import bo.custom.impl.EmployeeBoImpl;
-import bo.custom.impl.ItemBoImpl;
 import bo.custom.impl.PartBoImpl;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -12,9 +10,7 @@ import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import dto.EmployeeDto;
-import dto.ItemDto;
 import dto.PartDto;
-import dto.tm.ItemTm;
 import dto.tm.PartTm;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;

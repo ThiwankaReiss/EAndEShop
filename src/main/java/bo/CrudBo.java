@@ -1,7 +1,5 @@
 package bo;
 
-import dao.SuperDao;
-
 import java.sql.SQLException;
 import java.util.List;
 

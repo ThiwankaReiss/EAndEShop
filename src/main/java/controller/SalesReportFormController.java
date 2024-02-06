@@ -5,7 +5,6 @@ import bo.custom.OrderBo;
 import bo.custom.impl.EmployeeBoImpl;
 import bo.custom.impl.OrderBoImpl;
 import com.jfoenix.controls.JFXTextField;
-import db.DBConnection;
 import dto.EmployeeDto;
 import dto.OrderDto;
 import dto.PointDto;
@@ -14,19 +13,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
-import java.io.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -340,6 +337,7 @@ public class SalesReportFormController {
         topic="Daily Sales Report";
         salesReportLineChart.getData().clear();
         xyData.clear();
+
         if(isDateInputCorrect()){
             List<PointDto> d= dailyArray(startDateTextField.getText(),endDateTextField.getText());
             String[] dates=generateDateArray(startDateTextField.getText(),endDateTextField.getText());
